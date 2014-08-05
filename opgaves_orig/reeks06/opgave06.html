@@ -1,0 +1,206 @@
+<html><head><title>OEFENINGEN</title></head><body><center><font size="+1"><b>
+
+OEFENINGEN<br>bij<br>ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+
+<center>
+<p>
+2013-2014<br>
+</p></center>
+
+<p>
+
+</p><li><b>LES 10</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</li><li><b>De Bruijnreeksen</b>
+<onderwerp=De Bruijnreeksen>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+28 oktober 2013<br>
+<p>
+<br>
+<b>A. Grafen</b>
+<p>
+Je krijgt een header <a href="graaf.h"><code>graaf.h</code></a>.
+Het bestand bevat definities en code voor verschillende klassen van ijle grafen.
+Voor de eenvoud is de implementatie in hetzelfde bestand opgenomen. Je krijgt ook een
+voorbeeldtoepassing in 
+<a href="graaf.cpp">graaf.cpp</a>.
+<p>
+<p>
+In een typische objectgeori&euml;nteerde aanpak zou men een klasse Knoop en een
+klasse Verbinding (of Buur) maken die een pointer naar een Knoop bevat. In deze 
+implementatie werken we echter met <i>nummers i.p.v. pointers</i>. De knopen (Eng. 
+<i>nodes</i>) worden genummerd van 0 tot <code>n-1</code>, en ook de verbindingen (Eng.
+<i>edges</i>) krijgen nummers (die, als er verwijderd wordt, niet meer noodzakelijk op
+mekaar volgen).
+De graaf houdt een <code>std::vector</code> van knopen bij. 
+Elke knoop is een <code>std::map</code> die doelknoopnummers afbeeldt op verbindingsnummers.
+
+<p>
+Het voordeel van een nummeringssysteem is dat men eenvoudig data met knopen of 
+verbindingen kan associ&euml;ren zonder iets aan de graafimplementatie te moeten 
+veranderen. Zo kan men bv. een tabel of vector van pre-ordernummers maken, die men 
+indexeert met knoopnummers. Verbindingsgewichten kunnen ook ondergebracht worden in een 
+aparte tabel of vector, ge&iuml;ndexeerd d.m.v. verbindingsnummers. Enzovoort. 
+
+<p>
+De nummeringen zouden eigenlijk met <code>unsigned int</code> (of <code>size_t</code>) 
+moeten gebeuren, want ze worden gebruikt om te indexeren in tabellen en vectoren. Er is 
+echter voor <code>int</code> gekozen omdat men in graafalgoritmen vaak handig gebruik
+maakt van <i>speciale</i> nummers zoals -1, bv. om aan te duiden dat een verbinding niet 
+bestaat. 
+
+<p>
+Bij de constructie van een <code>Graaf</code> moet je een <code>RichtType</code> 
+meegeven, hetzij <code>GERICHT</code> of <code>ONGERICHT</code>. Het verschil zit hem bij 
+het toevoegen van een verbinding. Indien je een verbinding a->b toevoegt aan een 
+ongerichte graaf, dan wordt automatisch de verbinding b->a ook toegevoegd. Interessant 
+is dat beide verbindingen hetzelfde verbindingsnummer krijgen! Op die manier kun je data, 
+zoals een gewicht, associ&euml;ren met "beide richtingen" van een ongerichte verbinding. 
+
+<p>
+Bij de constructie van een <code>Graaf</code> kun je een aantal knopen opgeven. Default 
+is dit nul. Je kunt achteraf nog knopen toevoegen met de methode 
+<code>voegKnoopToe()</code>. Deze methode geeft het knoopnummer van de nieuwe knoop
+terug. In deze implementatie kun je de nummering niet wijzigen en kun je geen knopen 
+verwijderen. Verbindingen moeten toegevoegd worden met 
+<code>voegVerbindingToe(a,b)</code>. Je kunt ook verbindingen verwijderen met
+<code>verwijderVerbinding</code>.
+
+<p>
+Let op de implementatie van de operator[], die ervoor zorgt dat een graaf zich voordoet 
+als een tabel van knopen (waarom de twee versies ?!). Een knoop is een <code>map&lt;int, 
+int&gt;</code>. Om buren te overlopen moet je een iterator gebruiken, meer bepaald 
+<code>Knoop::iterator</code>. De waarde van een map-iterator is een paar, in dit geval 
+<code>pair&lt;int, int&gt;</code>. Dat is een struct met twee velden: <code>first</code> 
+slaat hier op het knoopnummer van de buurknoop en <code>second</code> op het nummer van 
+de verbinding. 
+
+<p>
+Verschillende graafmethodes zijn <code>const</code>. Deze mogen de graaf niet wijzigen.
+ Als het nodig is om buren te overlopen moet je in dat geval 
+<code>Knoop::const_iterator</code> gebruiken. 
+
+<p> Sommige methodes gooien een <code>GraafExceptie</code> op indien er iets foutgaat. 
+Deze klasse erft van <code>std::logic_error</code> en indirect van 
+<code>std::exception</code>. Meer uitleg over standaardexcepties kun je bv. <a
+href="http://www.aoc.nrao.edu/~tjuerges/ALMA/STL/html/classstd_1_1exception.html">hier</a> vinden. 
+<p>
+<br>
+<b>B. De Bruijnreeks</b>
+<p>
+<b>Definitie:</b>
+Een <i>de Bruijnreeks</i> van orde <code>N</code> over een bepaald alfabet
+is de kortste <i>circulaire</i> reeks die elke mogelijke reeks van lengte <code>N</code>
+als (aaneensluitende) deelreeks bevat.
+<br>
+Bijvoorbeeld:
+<ul>
+ <li>een de Bruijnreeks van orde <code>N=2</code> over een alfabet <code>{a,b}</code> is 
+ bijvoorbeeld "aabb" want "aa", "ab", "ba" en "bb" komen erin voor als aaneensluitende 
+ deelreeks (indien je de reeks circulair opvat!) 
+ <li>een de Bruijnreeks van orde <code>N=3</code> over een alfabet <code>{a,b}</code> is 
+ bijvoorbeeld "abbbabaa". 
+ <li>een de Bruijnreeks van orde <code>N=2</code> over een alfabet <code>{a,b,c}</code> 
+is bijvoorbeeld "aacbbccab".
+</ul>
+
+<p>
+De grootte van het alfabet noemen we <code>M</code>.
+Vaak neemt men de eerste <code>M</code> letters van het alfabet, maar computationeel
+is het soms voordeliger gehele getallen vanaf 0 te nemen 
+(alfabet: <code>0</code> t.e.m. <code>M-1</code>).
+
+<p>
+Men kan aantonen dat de lengte van elke de Bruijnreeks <code>M<sup>N</sup></code> is.
+<p>
+Om het ingewikkelde manipuleren met strings te vermijden is het handig om strings van
+lengte <code>N</code> te beschouwen als getallen met <code>N</code> cijfers in het
+<code>M</code>-tallig stelsel: in plaats van a, b, c,  ... neem je 0, 1, 2, ... .
+Als <code>M=10</code> en <code>3</code>, bijvoorbeeld, heb je dan alle natuurlijke getallen nodig
+kleiner dan 1000 (eventueel nullen vooraan toevoegen). Als je liever letters ziet dan
+cijfers kan je bij het uitschrijven natuurlijk 0 terug omzetten naar a, 1 naar b, en zo
+voorts.
+De nummers zijn in feite hashcodes die effici&euml;nt berekend kunnen worden d.m.v. de
+ regel van Horner. Er zijn <code>M<sup>N</sup></code> mogelijke woorden van lengte 
+<code>N</code> uit een alfabet met <code>M</code> letters. De hashcodes liggen dus in het 
+interval <code>[0,M<sup>N</sup>[</code>. 
+<br>Omgekeerd kan uit elk getal uit dit interval een woord afgeleid worden ("unhash").
+
+<p>
+<br>
+<b>Opgave</b>
+<ul>
+<li>
+Aan welke voorwaarden moet een gerichte graaf voldoen opdat er een Eulercircuit zou bestaan
+(tip: kijk in de cursus)?
+<li>
+Wat is het verband tussen De Bruijnreeksen en Eulercircuits? Tip: kijk naar de
+<code>N</code>-strings die in een De Bruijnreeks verscholen zitten. Voor <code>N=3</code>
+bevat bijvoorbeeld "abbbabaa". de strings "abb", "bbb", "bba", en zo voorts. Wanneer
+kunnen twee strings op achter mekaar staan in zo'n uitgeschreven lijstje? Let erop dat
+een Eulercircuit alle verbindingen juist &eacute;&eacute;n keer bezoekt, maar niet
+noodzakelijk alle knopen.
+<li>
+Toon aan dat de lengte van elke de Bruijnreeks <code>M<sup>N</sup></code> is.
+<li>
+Schrijf een programma <code>debruijn.cpp</code> dat een de Bruijnreeks genereert van lengte <code>N</code>
+over een alfabet <code>M</code> en uitschrijft, 
+waarbij de parameters <code>M</code> en <code>N</code>
+op de commando-lijn meegegeven worden.
+<p>
+<b>Opmerking: voor je begint met coderen maak je een UML-klassendiagram dat alle klassen
+uit het <tt>graaf.h</tt>-bestand bevat, en ook alle klassen die je gaat programmeren.
+Attributen en operaties worden ook aangegeven, en je laat het resultaat controleren voor
+je begint met de implementatie</b>.
+<p>
+<li>
+Zoals altijd ga je de code die je schrijft natuurlijk grondig testen en zoals je weet is
+het vaak nuttig de testen <i>eerst</i> te maken.
+<br>Enkele hints voor een "grondige" test voor Eulercircuits:
+<ul>
+<li>Ga na of de teruggegeven weg relevant is. Worden alle knopen bezocht? Worden alle
+ takken precies eenmaal bezocht?
+<li>Wat gebeurt er met je code als er geen Eulercircuit is?
+</ul>
+<p>
+Het kan zijn dat je voor bepaalde tests ook een (vrij ingewikkeld) algoritme moet schrijven!
+
+
+<p>
+<b>bijkomende opgave</b>
+<p>
+Je bent een geniaal huis-aan-huisverkoper van slechte stofzuigers. Je bent zo goed dat je
+in elk gezin waar je komt een stofzuiger kan verkopen, behalve als de bewoners je
+reputatie kennen. Je stofzuigers zijn daarentegen zo slecht dat iedereen die er een
+gekocht heeft dit onmiddellijk laat weten aan iedereen die het wil weten via zijn blog.
+Ze zijn zelfs zo slecht dat iedereen die erover leest op een blog het bericht
+onmiddellijk overneemt op zijn eigen blog. Met RSS verspreidt je reputatie zich dan ook
+razendsnel.
+<p>
+Je komt in een nieuw stadje van 5000 gezinnen en wil daar uiteraard zoveel mogelijk
+stofzuigers verkopen. Door een gelukkig toeval kan je de hand leggen op <a href="rss">een
+lijst van alle RSS-abonnementen</a> zodat je voor elk huisgezin weet welke andere
+gezinnen het volgt via zijn blog.
+<p>
+Hoeveel stofzuigers kan je maximaal kwijt? In welke volgorde moet je dan huizen afgaan en
+welke gezinnen mag je overslaan?
+<b>Tips:</b>
+<ul>
+<li> Het gezin 774 is een stel asocialen wiens hond de hele buurt wakker blaft. Niemand
+leest dan ook hun blog en je kan veilig bij hen beginnen.
+<li> Als je &eacute;&eacute;n stofzuiger verkocht krijgt aan een gezin van een sterk
+samenhangende component van de RSS-graaf, kan je binnen die component geen tweede
+stofzuiger kwijt.
+</ul>
+<br>
+<b>Bijkomende opgave</b>
+Je hebt eindelijk een leverancier van goede stofzuigers gevonden en doet een winkel open
+in het voorvermelde stadje. Je wil dan ook dat iedereen dit weet. Welke gezinnen moet je
+verwittigen zodanig dat iedereen dit inderdaad weet?
+
+
+</body>
+</html>

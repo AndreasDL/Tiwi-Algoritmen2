@@ -1,0 +1,119 @@
+<html><head><title>OEFENINGEN: Splaybomen</title></head><body><center><font size="+1"><b>
+
+OEFENINGEN<br>bij<br>ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+
+<center>
+<p>
+2013-2014<br>
+</p></center>
+
+<p>
+
+</p><li><b>LES 1</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</li><li><b>ZOEKBOMEN</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+23 september 2013<br>
+<p>
+De gegeven code voor <a href="zoekboom.h"> zoekbomen </a> bevat fouten. Verbeter ze.
+<p>
+Soms is het interessant om grafiekjes te kunnen bekijken. We laten uiteraard het
+eigenlijke werk, het tekenen van de grafiek, over aan iemand anders, en gebruiken een
+spreadsheet.
+
+Een voorbeeldje vind je in het programma <a 
+href="zoekboomdiepte.cpp">zoekboomdiepte.cpp</a>, dat de header <a
+href="puntgenerator.h">puntgenerator.h</a> gebruikt. Dit maakt een grafiek (wat die
+betekent zien we later) en slaat deze op in een bestand <tt>dieptedata.csv</tt>. Als je
+het 
+programma laat lopen en dan <tt>dieptedata.csv</tt> inleest in je favoriete spreadsheet,
+zoals Excel of OpenOffice Calc, dan kan je met de diagramfunctie een grafiekje tekenen.
+<b>Opmerking:</b> <tt>dieptedata.csv</tt> is geschikt voor rekenbladprogramma's met een niet-Engelstalige
+instelling, waarbij vlottendekommagetallen worden voorgesteld met een vlottende komma. Hoe je
+een .csv-bestand produceert waar de vlottende komma vervangen is door een punt, vind je
+in de API van de klasse <tt>CsvData</tt>:
+</p><p>
+De klasse <tt>CsvData</tt> wordt gedefinieerd in de header
+
+<a href="csv.h">csv.h</a>
+Elk object van de
+klasse komt overeen met één .csv-bestand, waarin getalwaarden worden opgeslagen.
+Vermits de meeste rekenbladen grafieken kunnen opmaken met verschillende gegevensreeksen,
+waarbij elke gegevensreeks standaard opgeslagen is in een kolom, slaat elke <tt>CsvData</tt>
+gegevens ook op deze manier op. De API is de volgende
+
+</p><center>
+
+<table border="1">
+<tbody><tr><td width="0">CvsData(const std::string&amp; _bestandsnaam, char _scheidingsteken='.')</td></tr>
+<tr><td width="0">Creëert een <tt>CsvDataobject</tt>.
+<tt>_scheidingsteken</tt> duidt aan welk teken geheel en
+fractioneel deel scheidt in een vlottendekommagetal. Defaultwaarde is '.', voor
+niet-Engelse rekenbladen dient ',' opgegeven te worden.</td></tr><tr><td>
+</td></tr><tr><td width="0">template class&lt;class T&gt;
+<br>voegDataToe(const std::vector&lt;T&gt;&amp; nieuwedata)</td></tr>
+<tr><td width="0">Voeg een kolom met numerieke waarden toe. <tt>T</tt> kan een willekeurig type zijn dat met
+static_cast&lt;double&gt; kan worden omgezet naar <tt>double</tt>.
+</td></tr></tbody></table>
+</center>
+<div class="p"></div>
+<p>
+Bij splayen probeer je de boom zo te herordenen dat operaties gemiddeld effici&euml;nt
+zijn. Interessant is hierbij de <em>gemiddelde diepte</em> van een knoop te kennen.
+Schrijf een lidfunctie van Binboom die de gemiddelde diepte van de knopen berekent.
+<p>
+Een na&iuml;ve methode om te splayen is de volgende:
+<ol>
+<li>Vertrek bij de binboom met een een pointer naar de wortel.
+<li>Als je in een lege boom zit, of in de boom warvan de wortel de gezochte sleutel
+heeft, stop.
+<li>Als de gezochte sleutel kleiner is dan de sleutel in de wortel, roteer naar rechts.
+<li>Als de gezochte sleutel daarmee naar rechts geroteerd is ga naar de rechter
+deelboom.
+<li>Als de gezochte sleutel groter is dan de sleutel in de wortel, roteer naar links.
+<li>Als de gezochte sleutel daarmee naar links geroteerd is ga naar de linker
+deelboom.
+<li>Ga terug naar stap 2.
+</ol>
+<p>
+Maak nu een zoekboom die getallen kan bevatten en voeg de getallen van 0 tot en zonder 10000
+in volgorde toe.
+<p>
+Pas nu de bovenstaande na&iuml;eve splaymethode toe op 10000 random gekozen getallen die
+in de boom zitten. Neemt de gemiddelde diepte van de knopen systematisch af?
+<p>
+Doe nu hetzelfde, maar met een nieuwe boom waarin dezelfde getallen in random volgorde
+zijn toegevoegd.
+</p><li><b>LES 3</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</li><li><b>SPLAYBOMEN</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+30 september 2013<br>
+<p>
+<h3>Deel 1: te maken zonder computer.</h3>
+<ul>
+<li>Maak een zoekboom die getallen kan bevatten en voeg de getallen van 0 tot en zonder 10000
+in volgorde toe. Wat is de totale diepte? Zoek nu 0 in deze boom en gebruik bottom-up
+splayen. Wat is de totale diepte nadien? Zoek daarna 9999 in deze boom en gebruik bottom-up
+splayen. Wat is de totale diepte nadien? 
+<li>Maak een zoekboom die getallen kan bevatten en voeg de getallen van 0 tot en zonder 10000
+toe in de volgorde 9999, 0 , 9998, 1, 9997, 2, ... . Wat is de laatst toegevoegde knoop?
+Wat is de totale diepte? Zoek de laatst toegevoegde knoop met bottom-up splayen. Wat is de
+totale diepte nadien?
+</ul>
+<h3>Deel 2: met computer.</h3>
+<p>
+<ul>
+<li>Controleer je antwoord op deel 1 met een programma.
+<li>
+Maak een zoekboom die getallen kan bevatten en voeg de getallen van 0 tot en zonder 10000
+in volgorde toe.
+Pas nu zoeken met bottom-up splayen toe op 10000 random gekozen getallen die
+in de boom zitten. Neemt de gemiddelde diepte van de knopen systematisch af?
+</ul>
+</p></li></body></html>

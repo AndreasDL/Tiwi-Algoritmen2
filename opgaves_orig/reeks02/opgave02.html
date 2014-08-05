@@ -1,0 +1,82 @@
+<html><head><title>OEFENINGEN: Rood-zwarte bomen</title></head><body><center><font size="+1"><b>
+
+OEFENINGEN<br>bij<br>ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+
+<center>
+<p>
+2013-2014<br>
+</p></center>
+
+<li><b>LES 4</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<li><b>ROOD-ZWARTE BOMEN</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+4 oktober 2013<br>
+<p>
+<b>Rood-zwarte bomen</b> zijn altijd <em>nogal</em> evenwichtig. Je betaalt er
+wel een prijs voor: toevoegen en verwijderen is ingewikkeld. Voor we ze
+implementeren zijn hier een paar toepassingen om
+<em>op papier</em> op te lossen.
+<p>
+De eerste oefening maakt duidelijk dat top-down- en bottom-upmethodes 
+niet altijd hetzelfde resultaat opleveren. Bekijk de kleine boom. 
+<p>
+<center>
+<img src="rzwklein.gif" width=400>
+</center>
+<p>
+Verwijder de knoop met
+sleutel 8. Probeer het eerst bottom-up, daarna top-down. Verwijder ook eens 15: eerst
+bottom-up, dan top down.
+<p>
+Bij de tweede oefening hebben we een
+zeer scheve boom:
+<p>
+<center>
+<img src="rzwgroot.gif" width=750>
+</center>
+<p>
+ als <em>l</em> de diepte
+aan de linkerkant is, en <em>r</em> de diepte aan de rechterkant, dan
+is
+<p>
+<center>
+<em>
+r=2l+1.
+</em>
+</center>
+<p>
+Slechter kan niet bij een rood-zwarte boom, en elke bewerking zal de
+situatie verbeteren. Probeer maar: elke keer vertrekkend van de
+beginsituatie van de tekening moet je
+<ul>
+<li> sleutel 6 bottom-up toevoegen.
+<li> sleutel -2 top-down verwijderen.
+</ul>
+<p>
+<b>Bijkomende opgave: een doordenkertje.</b>
+<p>
+Een rood-zwarte boom is altijd nogal evenwichtig. Dat betekent dat je bij een
+willekeurige zoekboom niet altijd de knopen zo kan inkleuren dat je een rood-zwarte boom
+krijgt.
+<ul>
+<li>Hoe kan je van een zoekboom uitvinden of je hem als rood-zwarte boom kan inkleuren,
+en hoe kleur je hem dan in?
+<li>Door rotaties kan je een boom evenwichtiger maken, en er zo voor zorgen dat je hem
+rood-zwart kan inkleuren.
+</ul>
+Als je dit alles implementeert moet je een rood-zwarteboomklasse hebben. Omdat elke knoop
+een kleur heeft moet er dan in elke knoop een attribuut bijkomen. Ook treaps hebben een
+attribuut. Waarschijnlijk de meest eenvoudige manier om een gelijkaardige structuur (een
+binaire boom met de data ingepakt in een wrapper) te bekomen als bij zoekbomen is om een 
+klasse 
+<t>BinboomMetKnoopdata&lt;Sleutel,Data,Knoopdata&gt;</t> te maken. Als je echt zoveel
+mogelijk code wil bewaren, kan je deze laten overerven van de <t>Binboom</t>klasse:
+<br>
+<t>class BinboomMetKnoopdata&lt;Sleutel,Data,Knoopdata&gt;:
+        public Binboom&lt;Sleutel,pair&lt;Data,Knoopdata&gt; &gt;</t>
+</p>
+Dit laatste wordt door sommigen enthousiast (want code wordt hergebruikt) en door anderen
+sceptisch (want niet gemakkelijk te begrijpen) onthaald.</li></body></html>

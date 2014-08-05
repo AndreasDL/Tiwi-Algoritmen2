@@ -1,0 +1,59 @@
+<center><font size="+1"><b>
+<title>OEFENINGEN: SHIFT-ANDZOEKMETHODE</title>
+OEFENINGEN<br>bij<br>ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+
+<center>
+<p>
+2013-2014<br>
+</center>
+
+<p>
+
+<li><b>LES 16</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<li><b>Shift-and</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+29 november 2013<br>
+<p>
+De shift-andmethode maakt uitgebreid gebruik van bitpatronen. Je krijgt
+van ons dan ook een klasse bitpatroon in
+<a href="bitpatroon.h">bitpatroon.h</a>, waarin
+alle belangrijke operaties in ge&iuml;mplementeerd zijn (inclusief een
+uitschrijfoperatie voor tests). Let op: de nummering van de bits begint
+<em>links</em>: <tt>Bitpatroon::eenbit(0)</tt> geeft dus
+1000000000000000000000000000000, en niet
+0000000000000000000000000000001.
+Voor de eenvoud veronderstellen we dat de te zoeken naald hoogstens
+<tt>patroonlengte</tt> karakters bevat.
+<p>
+Bij de shift-andmethode moet er veel werk verzet worden voor het
+eigenlijke zoeken kan beginnen: het opzetten van de bitpatronen.
+Vandaar dat dit gebeurt in de constructor. Dit is effici&euml;nt als je
+dezelfde naald verschillende keren moet zoeken. De hoofding vind je in
+
+<a href="shiftand.h">shiftand.h</a>. Je ziet dat de zoekoperatie een <tt>queue</tt>
+teruggeeft met plaatsen: je gebruikt de methode meestal om alle
+plaatsen waar de naald voorkomt op te zoeken. Meestal worden die
+plaatsen daarna in volgorde verwerkt. Dus gebruik je een <tt>Queue</tt>
+en geen gewone <tt>Lijst</tt>.
+<p>
+Als je een karakterstring meegeeft moet je ook de lengte opgeven. Op
+deze manier is het nulkarakter geen speciaal karakter meer. Je kan dus
+rustig een string als ``a\000bc'' opgeven (`\000' is het nulkarakter).
+<p>
+Schrijf een programma dat een string vraagt aan de gebruiker, en dat weergeeft hoe vaak
+het in de 
+<a href="koran.txt">koran</a>
+voorkomt.
+<p>
+We gebruiken <tt>unsigned char</tt> en niet <tt>char</tt>, omdat dit handiger is
+(waarom?).
+<p>
+<p>
+<b>Bijkomende opgave</b> Schrijf een programma dat hoofdletteronafhankelijk opzoekt.
+</HTML>

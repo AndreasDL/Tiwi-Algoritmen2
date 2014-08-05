@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>OEFENINGEN: KERSTMIS</title>
+</head>
+<body>
+<center><font size="+1"><b>OEFENINGEN<br>
+bij<br>
+ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+<center>
+<p>2011-2012<br>
+</p>
+</center>
+<p>
+</p>
+<li><b>LES 22</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <br>
+</li>
+<onderwerp=maximale gemeenschappelijke deelstring>
+<li><b>Kerstmis</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 18 december 2013 voormiddag.
+<p>
+<img src="kerstbomen.gif">
+<p>
+Kerstmis is traditioneel de tijd van kerstcadeautjes en kerstverhalen. Bijna alle
+kerstverhalen hebben veel gemeenschappelijks: het is winter, het sneeuwt en er zijn arme
+mensen op straat.
+<p>
+Kerstverhalen komen in heelder bundels, zoals bijvoorbeeld
+<a href="http://www.gutenberg.org/ebooks/28198">A Budget of Christmas Tales by Charles
+Dickens and Others, op Project Gutenberg</a>.
+
+Om het gemakkelijk te maken krijg je elk verhaal in een apart bestand:
+<ol>
+<li><a href="verhalen/AChristmasCarol">verhaal01</a>
+<li><a href="verhalen/AngelasChristmas">verhaal02</a>
+<li><a href="verhalen/AWesternChristmasInTheOldDays">verhaal03</a>
+<li><a href="verhalen/BillysSantaClausExperience">verhaal04</a>
+<li><a href="verhalen/ChristmasInPoganuc">verhaal05</a>
+<li><a href="verhalen/IndianPetesChristmasGift">verhaal06</a>
+<li><a href="verhalen/JoesSearchForSantaClaus">verhaal07</a>
+<li><a href="verhalen/MyChristmasDinner">verhaal08</a>
+<li><a href="verhalen/TheChimes">verhaal09</a>
+<li><a href="verhalen/TheChristmasBabe">verhaal10</a>
+<li><a href="verhalen/TheChristmasGoblins">verhaal11</a>
+<li><a href="verhalen/TheChristmasPrincess">verhaal12</a>
+<li><a href="verhalen/TheFirstChristmasInNewEngland">verhaal13</a>
+<li><a href="verhalen/TheFirstPuritanChristmasTree">verhaal14</a>
+<li><a href="verhalen/TheLegendOfTheChristmasTree">verhaal15</a>
+<li><a href="verhalen/TheOldMansChristmas">verhaal16</a>
+<li><a href="verhalen/ThePeaceEgg">verhaal17</a>
+<li><a href="verhalen/ThePoorTraveler">verhaal18</a>
+<li><a href="verhalen/TheSongOfTheStar">verhaal19</a>
+<li><a href="verhalen/WidowTownsendsVisitor">verhaal20</a>
+</ol>
+die je ook kan binnenhalen in een <a href="verhalen.zip">zipbestand</a>.
+Om te zien hoeveel de verhalen op mekaar lijken gaan we de <i>langste gemeenschappelijke
+deelstring</i> bepalen voor elke twee verhalen. Dit gebeurt aan de hand van een
+suffixboom zoals gegeven in <a href="suffixboom.h">suffixboom.h</a>, die uiterst
+gerieflijk al
+voorzien is van een opbouwoperatie.
+<p>
+De gemakkelijkste manier om gemeenschappelijke deelstrings te vinden is de volgende.
+Steek je strings in een suffixboom met elk een verschillend afsluitteken (zorg er wel
+voor dat de gebruikte afsluittekens niet in een andere string voorkomen. In de
+kerstverhalen zit er geen enkel karakter met rangnummer -60 tot 0, grenzen inbegrepen) en
+bekijk een willekeurige (expliciete of impliciete) knoop. Als ergens onder de knoop een
+blad zit met afsluitteken x, dan zit de string aangegeven door de knoop in het
+bijbehorende bestand.
+<p>
+Bepaal de langste deelstring die in <i>alle</i> mogelijke verhalen zit.
+Bepaal ook voor elk <i>paar</i> verhalen de langste gemeenschappelijke deelstring.
+(dit zijn dus 190 deelstrings).
+<p>
+Stel de gelijkenisgraaf op. Dit is een dichte ongerichte gewogen graaf waarbij het
+gewicht tussen verhaal <i>i</i> en verhaal <i>j</i> gegeven wordt door
+1/lengte(lgd(i,j)).
+<p>
+Het is bekend dat elke schrijver een specifiek woordgebruik heeft en sommige
+standaardfrazen veel gebruikt. We kunnen ervan uitgaan dat daardoor de kans op een lange
+lgd groter wordt. Drie van de verhalen zijn geschreven door Charles Dickens. Valt dit op
+aan de lgd's? Merk op dat de lgd van twee Dickensverhalen al minstens 15 karakters lang
+is omdat de naam van de auteur in de tekst vermeld staat.
+</body>
+</html>

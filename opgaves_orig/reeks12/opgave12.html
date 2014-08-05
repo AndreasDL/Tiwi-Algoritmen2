@@ -1,0 +1,106 @@
+<html><head><title>OEFENINGEN: Genetische algoritmen</title></head><body><center><font size="+1"><b>
+
+OEFENINGEN<br>bij<br>ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+
+<center>
+<p>
+2013-2014<br>
+</p></center>
+
+<p>
+
+</p><li><b>LES 20</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</li><li><b>Genetische Algoritmen</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+16 december 2013<br>
+<p>
+<li>
+Gegeven de volgende code voor deelverzamelingen van <t>{0,1,... ,n-1}</t>. (<t>
+S[i]==true</t> als en slechts als <t>i</t> in S), voor een genetisch algoritme, en de
+gegevensstructuur voor een ongerichte graaf:
+<pre>
+class Subset: public vector&lt;bool&gt;{
+    void init(int n){
+        resize(n);
+        for (int i=0;i&lt;size();i++)
+            (*this)[i]=(rand()%2==1);
+    };
+    //kruis alleen oproep als *this en de twee argumenten even groot zijn!!
+    void kruis(const Subset& s1, const Subset& s2){
+        const Subset* oud[2]={&s1,&s2};
+        for (int i=0;i&lt;size();i++)
+            (*this)[i]=(*oud[rand()%2])[i];
+    }
+};
+
+template &lt;class P&gt;
+class Evolutor&lt;class P&gt;{
+public:
+//opgelet: geefOplossing geeft een referentie naar tijdelijk object.
+//dit kan maar tijdelijk gebruikt worden!
+    const P& geefOplossing(){
+        vector&lt;P&gt; populatie(N);
+        for (int i=0; i&lt;N; i++ ){
+            init(populatie[i]);
+        }
+        for (int i=0; i&lt;AANTALGENERATIES; i++ ){
+            for (int j=N/3; j&lt;(2*N)/3 ;j++ ){
+                muteer(populatie[rand() % N/3], populatie[j]);
+            }
+            for (int j=(2*N)/3; j&lt;N ;j++ ){
+                kruis(populatie[rand() % (2*N)/3],
+                      populatie[rand() % (2*N)/3], populatie[j]);
+            }
+            zetBesteVooraan(populatie,N/3);
+        }
+        zetBesteVooraan(populatie,1);
+        return populatie[0];
+    }
+
+protected:
+//probleemafhankelijke functies:
+    //evaluatiefunctie: hoe kleiner hoe beter!
+    virtual double f(const P& p)=0;
+    virtual void muteer(const P& in, P& uit)=0;
+    virtual void kruis(const P& ouder1, const P& ouder2, P& kind)=0;
+    virtual void init(P&)=0;
+//probleemonafhankelijk:
+    //zetbesteVooraan zet de beste (op basis van f) n elementen
+    //van de populatie vooraan in de vector
+    virtual void zetBesteVooraan(vector&lt;P&gt;&, int n);
+    //populatiegrootte. N is deelbaar door 3
+    static const int N;
+    //aantal generaties
+    static const int AANTALGENERATIES;
+};
+</pre>
+
+Implementeer een klasse <t> GrootsteIndependentSet</t> die een zo groot mogelijke <i>
+independent set</i>
+teruggeeft (een <i> independent set</i> is een verzameling knopen zonder onderlinge
+verbindingen) met de volgende interface:
+<pre>
+class GrootsteIndependentSet{
+    Subset& geefGrootste(const Graaf&);
+};
+</pre>
+Een bijkomende eis is dat, tijdens de berekeningen, alle elementen van de populatie
+independent sets moeten zijn.
+
+<li>
+Gegeven de gegevensstructuur voor het SAT-probleem in <a href="sat.h">sat.h</a>.
+Vind een (benaderde) oplossing van dit probleem. Om de appetijt aan te scherpen krijg je
+<a href="satklein.dat">een klein probleempje</a> dat je zelfs op het zicht kan oplossen
+en een <a href="satgroot.dat">groot probleem</a> dat niet zo evident is.
+Voor wie dat nog te klein is hebben we een <a href="satheelgroot.dat">heel groot
+probleem</a>.
+
+
+
+
+
+</p></li></body></html>

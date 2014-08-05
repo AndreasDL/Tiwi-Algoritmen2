@@ -1,0 +1,73 @@
+<center><font size="+1"><b>
+<title>OEFENINGEN: ZOOGDIEREN</title>
+OEFENINGEN<br>bij<br>ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+
+<center>
+<p>
+2013-2014<br>
+</center>
+
+<p>
+
+<li><b>LES 12</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<li><b>Zoogdieren</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+8 november 2013<br>
+<p>
+Carl Linnaeus (1707-1778) is de grondlegger van de taxonomie van levende wezens zoals wij
+die kennen en waarin de mens aangeduid wordt als <i>homo sapiens</i>. Uiteraard ging hij
+nogal met de losse pols tewerk bij zijn indeling van planten- en dierensoorten in
+ordes, families en genera en kan het veel beter. We kunnen indelingen maken
+die op meer objectieve verschillen gebaseerd zijn.
+<p>
+<b>Noot: het bestand zoogdieren.xml leidt bij sommige browsers tot problemen, hoewel het
+nauwelijks 68655 lijnen tekst bevat. Best alleen openen in een algemene teksteditor</b>.
+In het bestand 
+<a href="zoogdieren.xml">zoogdieren.xml</a> staat informatie over een aantal al dan
+niet uitgestorven
+zoogdiersoorten (een aantal zeer verwante soorten is op een punt samengebracht), samen
+met de vergelijkingen tussen een aantal soorten die aangeven hoe verwant ze zijn.
+Maak een zinnige indeling in groepen, waarbij je als parameter opgeeft hoeveel groepen je
+juist wil.
+<p>
+De interessantste zoogdiersoort is uiteraard de mens (name='(modern humans)'). Om te zien
+of een groepsindeling je bevalt, schrijf je alle soorten uit die tot dezelfde groep als
+de mens behoren.
+
+<p>
+De straal van een gewogen, connexe ongerichte graaf vanuit een gegeven knoop is de
+afstand tot de verste knoop in de graaf. Het middelpunt van zo'n graaf is de verzameling
+van knopen waarvoor de straal minimaal is. Voor een groep bekomen uit de indeling die je
+gemaakt hebt bevat het middelpunt de meest typische soorten. Wat zijn de meest typische
+soorten voor de groep die de mens bevat?
+
+<p>
+Om XML in te lezen kan je gebruik maken van TinyXML. Enige opmerking: je kan voor
+het gebruik de <a href="tinyxml/docs/index.html"> documentatie</a> volgen, en tinyxml als
+bibliotheek compileren. De andere methode is om gewoon 6 bestanden af te halen:
+<ul>
+<li><a href="tinyxml/tinystr.h">tinystr.h</a>
+<li><a href="tinyxml/tinyxml.h">tinyxml.h</a>
+<li><a href="tinyxml/tinyxml.cpp">tinyxml.cpp</a>
+<li><a href="tinyxml/tinystr.cpp">tinystr.cpp</a>
+<li><a href="tinyxml/tinyxmlerror.cpp">tinyxmlerror.cpp</a>
+<li><a href="tinyxml/tinyxmlparser.cpp">tinyxmlparser.cpp</a>
+</ul>
+en de laatste 5 met <tt>include</tt>-statements mee te nemen in je eigen broncode, zoals gebeurd
+is in
+<a href="leesfiets.cpp">leesfiets.cpp</a>. Het alternatief is om het
+<tt>.xml</tt>-bestand "met de hand" te parsen: de structuur is vrij
+eenvoudig.
+
+
+<b>Bijkomende opgave:</b>
+Maak een programma dat <i>alle</i> mogelijke groepen waarin de mens kan terechtkomen
+als het opgegeven groepsaantal varieert uitschrijft, met de bijbehorende middelpunten.
+
+</HTML>

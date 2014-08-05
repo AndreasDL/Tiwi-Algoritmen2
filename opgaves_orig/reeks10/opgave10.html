@@ -1,0 +1,54 @@
+<html><head><title>OEFENINGEN: Splaybomen</title></head><body><center><font size="+1"><b>
+
+OEFENINGEN<br>bij<br>ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+
+<center>
+<p>
+2013-2014<br>
+</p></center>
+
+<p>
+
+</p><li><b>LES 17</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</li><li><b>Ternaire bomen</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+29 november 2013<br>
+<p>
+<li>
+(Noot: dit is een korte oefening die geen geheel labo inneemt).
+<img src="ternaireboom.gif">
+Hiernaast zie je een ternaire zoekboom. De strings zijn afgesloten met
+het \#-karakter, dat kleiner is dan alle letters.
+Ga ne (1) welke strings zijn opgeslagen in deze ternaire boom en (2)
+in welke volgorde ze zijn toegevoegd.
+<p>
+<li>
+Gegeven de volgende datastructuren voor een ternaire zoekboom:
+<pre>
+class TernaireBoom{
+    TernaireBoom(){k=0;};
+protected:
+    TKnoop* k;
+    const static char afsluiter;
+};
+const char TernaireBoom::afsluiter=char(127);
+
+class Tknoop{
+friend class TernaireBoom;
+protected:
+    char c;
+    TernaireBoom kind[3];
+};
+</pre>
+Implementeer <tt>TernaireBoom::voegtoe(const string&)</tt>. Je mag veronderstellen dat
+<tt> TernaireBoom::afsluiter</tt> niet in een string kan voorkomen. Merk op dat
+<tt> TernaireBoom::afsluiter</tt> groter is dan elk ander karakter.
+
+
+
+
+</p></li></body></html>

@@ -1,0 +1,99 @@
+<center><font size="+1"><b>
+<title>OEFENINGEN: REGULIERE EXPRESSIES</title>
+OEFENINGEN<br>bij<br>ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+
+<center>
+<p>
+2013-2014<br>
+</center>
+
+<p>
+
+<li><b>LES 18</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<li><b>Reguliere expressies</b>
+<onderwerp=Automaten>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+9 december 2013<br>
+<p>
+
+De klasse <tt>Regexp</tt> in <a href="regexp.h">regexp.h</a>
+parset reguliere expressies. Er is gebruik
+gemaakt van een zeer eenvoudige taal om reguliere expressis weer te
+geven. Alle karakters staan voor zichzelf, behalve ronde haakjes, de
+ofstreep | en de herhalingsoperator *, die aangeeft dat het voorgaande (een
+gewoon karakter of een uitdrukking tussen haakjes) onbeperkt herhaald
+mag worden. Concatenatie krijgen we door gewoon achter elkaar te
+schrijven. Prioriteit van operatoren is ster, plus, of. Zo is aa*
+hetzelfde als a(a)*, a|b* is a|(b)*, en ba|ok is (ba)|(ok);
+Voor alle duidelijkheid heeft <tt>Regexp</tt> een uitschrijfoperatie 
+die met vierkante haakjes de volgorde van operaties aangeeft.
+Probeer maar eens met <a href="regexp.cpp">regexp.cpp</a>. De
+foutdetectie van <tt>Regexp</tt> is vrij beperkt.
+<p>
+
+Schrijf je eigen versie van grep, <tt>mijngrep</tt>, die gebruik maakt
+van regexps van bovenstaande vorm. Dit programma wordt opgeroepen met de
+opdracht <pre>grep &lt;regexp&gt; &lt;bestandsnaam&gt;</pre>
+en schrijft dan alle regels van het bestand uit waarin een deelstring zit die overeenkomt
+met de opgegeven regexp uit.
+<p>
+Een automaat kijkt of een bepaalde string behoort tot de taal gedefinieerd door de
+bijbehorende regexp. Om te zien of een gegeven string een <i>deel</i> bevat dat voldoet
+aan de regexp (en grep doet dit met elke lijn uit een bestand) moeten we twee dingen
+doen:
+<ol>
+<li> We moeten nagaan of de automaat zijn eindtoestand heeft bereikt op elke plaats van
+de string (want de deelstring die overeenkomt met de regexp kan daar eindigen).
+<li> We moeten de automaat herstarten op elke plaats van de string, want de gezochte
+deelstring kan daar beginnen.
+</ol>
+Het eerste kan zonder probleem gebeuren bij zowel een NA als bij een DA.
+Het tweede is veel gemakkelijker met een NA.
+Immers, met een deterministische automaat moet je voor elke
+plaats in de hooiberg opnieuw beginnen om te zien of er daar geen
+string begint die voldoet aan de regexp. Met een NA kan je alles
+tesamen doen door op elke plaats in de string de begintoestand van de NA terug toe te
+voegen aan de toestandsverzameling van de NA (en dat is doodsimpel: leg gewoon een
+epsilonverbinding van <i>elke</i> toestand van de NA naar de begintoestand).
+Nemen we bijvoorbeeld de regexp <b>abcd|ckef</b>. Als we al
+...abc hebben ingelezen, dan kan het zijn dat we al drie letters van
+abcd hebben, maar ook dat we &eacute;&eacute;n letter van ckef hebben.
+De NA ziet er dan uit zoals in de tekening.
+<center>
+<img src="automaat.gif">
+</center>
+<p>
+<br>
+<b>Tips:</b>
+<ul>
+<li>Als je in de code van <t>Regexp</t> kijkt dan zie je dat een <t>Regexp</t> recursief
+is opgebouwd: een <t>Regexp</t> is een operator met nul (letter) &eacute;&eacute;n (ster)
+of twee (en en of) argumenten, waarin de argumenten <t>Regexp</t>s zijn. Dit kan helpen
+bij het opbouwen van de automaat.
+<li>In principe kan je een automaat voorstellen als een graaf, en dus lijkt overerving
+van een of ander graaftype logisch. Is dit wel zo? Er zijn <b>twee</b> soorten bewerking
+waarvoor de voorstelling van een automaat geschikt moet zijn:
+<ol>
+<li> De opbouw van de automaat uitgaande van een <t>Regexp</t>.
+<li> Het gebruik van de automaat om strings te herkennen.
+</ol>
+Is de voorstelling van de structuur in de Graafklassen geschikt voor beide bewerkingen?
+Is het een goed idee om voor beide functies dezelfde voorstelling te gebruiken?
+</ul>
+<li>
+<b>Bijkomende opgave:</b>
+<p>
+Natuurlijk is een DA meestal effici&euml;nter dan een NA, maar bij een NA kan je elke
+plaats in de string als startplaats beschouwen om een overeenkomende deelstring te vinden
+op de manier zoals hiervoor beschreven. Wil je zowel
+de effici&euml;ntie van de DA als de uniforme benadering van de NA,
+dan kan je een DA maken en die beschouwen als een NA, waardoor je op elk ogenblik een
+begintoestand kan toevoegen, en dan het resultaat terug
+omzetten naar een DA.
+</html>

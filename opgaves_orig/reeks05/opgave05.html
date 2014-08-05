@@ -1,0 +1,95 @@
+<html><head><title>OEFENINGEN</title></head><body><center><font size="+1"><b>
+
+OEFENINGEN<br>bij<br>ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+
+<center>
+<p>
+2013-2014<br>
+</p></center>
+
+<p>
+
+</p><li><b>LES 8</b>
+<li><b>Quadtrees</b>
+<onderwerp=extendible hashing>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+18 oktober 2013<br>
+  
+Implementeer de gegeven interface van de klasse
+<a href="prquadtree.h">PRquadtree</a>.
+<p>
+<b>Opmerking:</b> Als <tt>knoopptr</tt> een <tt>Knoop*</tt> is die wijst naar een blad,
+dan kan je aan de <tt>x</tt>-co&ouml;rdinaat van het punt met
+<tt>static_cast&lt;Blad*&gt;(knoopptr)->x</tt>.
+<p>
+<p>
+Een  tip die je kan helpen:
+<pre>
+class Gebied{
+public:
+    Gebied(int maxc):xl(-maxc),xr(maxc),yl(-maxc),yr(maxc),xc(0),yc(0){};
+    void maakdeelgebied(int x,int y){
+            if (x&lt;xc)
+                xr=xc;
+            else
+                xl=xc;
+            if (y&lt;yc)
+                yr=yc;
+            else
+                yl=yc;
+            xc=(xl+xr)/2;
+            yc=(yl+yr)/2;
+    };
+    int geefKwadrant(int x, int y) const{
+        return (x&lt;xc? WEST : OOST) + (y&lt;yc? NOORD: ZUID);
+    }
+private:
+    int xl,xr,yl,yr,xc,yc;//geven grenzen gebied; l,r,c: links, rechts, centraal.
+}
+</pre>
+
+
+<b> Bijkomende opgave:</b>
+<p>
+<div>
+<img src="quadtree.gif" ALIGN="LEFT"> <i>Reverse software engineering</i> is het afleiden
+van programmeerbeslissingen uit de resultaten. De bijkomende opgave is een voorbeeld
+hiervan: bepaal welke de waarden van <tt>NOORD</tt>, <tt>OOST</tt>, <tt>ZUID</tt> en <tt>WEST</tt>
+zijn aan de hand van de tekening hiernaast. Controleer je antwoord door te zien of jouw code dezelfde boom
+oplevert voor dit geval.
+<p>
+Zoals uit de tekening blijkt kan een prquadtree veel knopen bevatten als er weinig punten
+zijn, als ze dicht bij elkaar liggen. Maak een grafiek (kijk naar de vorige opgave om te
+zien hoe je een .csv-bestand maakt) die het aantal knopen uitzet tegen het aantal punten,
+voor de puntenverzameling
+<p>
+(   (10000-5*i)* cos(i*0.25*M_PI), (10000-5*i)* sin(i*0.25*M_PI) ),
+<p>
+die op een spiraal liggen. Neem als maxco&ouml;rdinaat 100001.
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+</div>
+Gegeven de twee spiralen
+<p>
+(   (1000000-5*i)* cos(i*0.23*M_PI), (1000000-5*i)* sin(i*0.23*M_PI) ),
+<p>
+(0&le;i &lt; 19000)
+en
+<p>
+(   (1000007-3*i)* cos(i*0.27*M_PI), (1000007-3*i)* sin(i*0.27*M_PI) ),
+<p>
+(0&le;i &lt; 29000 en i &ne; 4407 en i &ne; 18407)
+<p>
+Wat is de afstand tussen deze twee verzamelingen?
+<p>
+
+
+</p></li></body></html>

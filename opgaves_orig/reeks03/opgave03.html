@@ -1,0 +1,92 @@
+<html><head><title>OEFENINGEN: Extendible hashing</title></head><body><center><font size="+1"><b>
+
+OEFENINGEN<br>bij<br>ALGORITMEN en GEGEVENSSTRUCTUREN</b></font>
+</center>
+
+<center>
+<p>
+2013-2014<br>
+</p></center>
+
+<p>
+
+</p><li><b>LES 5</b>
+<li><b>Extendible hashing</b>
+<onderwerp=extendible hashing>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+7 oktober 2013<br>
+<p>
+
+Implementeer de gegeven interface van de klasse <a 
+href="exhash.h">Exhash</a>.
+
+Enkele tips:  
+<OL type="1"> 
+<li> Bij extendible hashing is het de bedoeling om een zeer grote 
+hoeveelheid gegevens, verspreid over verschillende schijfpagina's, snel 
+te kunnen bewerken. De eigenlijke hardware die daarvoor in de praktijk 
+gebruikt wordt (de verschillende pagina's) wordt nu gesimuleerd door de 
+objecten van de klasse <tt>Schijfpagina</tt>. Om het testen overzichtelijk 
+te houden, wordt de schijfgrootte (het aantal gegevens dat een 
+schijfpagina kan bevatten) op 8 ingesteld. 
+
+<li> Als een schijfpagina vol is, wordt ze opgesplitst met behulp van 
+de lidfunctie <tt>splits(Schijfpagina&lt;T,D&#62;*&amp;)</tt>. De 
+parameter is een pointer naar de nieuw aangemaakte schijfpagina. 
+
+<li> Hoe haal je de eerste 3 bits uit de binaire voorstelling 01000001
+van de hashwaarde 65? <UL>
+<li> Om te beginnen zorg je ervoor dat elk getal waar je bitoperatoren 
+op los laat, een <tt>unsigned int</tt> is (anders wordt de eerste bit 
+voor het teken gebruikt).
+<li> Stel <tt>unsigned int getal = 65</tt>. Het aantal bytes dat voor 
+de binaire voorstelling van 65 wordt gebruikt, is machine-afhankelijk 
+en kan opgevraagd worden met <tt>sizeof(unsigned int)</tt>. Het aantal 
+bits is dus 8 keer groter.
+<li> Om de eerste 3 bits te kennen, schuif je het bitpatroon over 
+(<tt>aantalbits</tt>-3) plaatsen op naar rechts. Gebruik het commando 
+<tt>getal&#62;&#62;(aantalbits-3)</tt>.
+<li> Wil je weten of de derde bit een 1 dan wel een 0 is, dan gebruik
+je de bitsgewijze <tt>AND</tt>-operator (<tt>&amp;</tt>), die twee 
+getallen bit per bit vergelijkt (stel dat <tt>bit1</tt> en <tt>bit2</tt> bitpatronen zijn
+met allemaal nullen behalve een 1 op &eacute;&eacute;n plaats. Dan is
+<tt>bit1 &amp; bit2 == 1</tt> als en 
+slechts als <tt>bit1==1 &amp;&amp; bit2==1</tt>). De test wordt dus: 
+<tt>if ((getal&#62;&#62;(aantalbits-3)) &amp; 1)</tt> met resultaat
+<tt>true</tt> indien de derde bit van
+<tt>getal</tt> gelijk is aan 1.
+</UL>
+<li> Kan je nu een object van de geparametriseerde klasse 
+<tt>Exhash&lt;T,D&#62;</tt> instanti&#235;ren voor sleutels van eender 
+welk type? Neen! De gebruikte sleutels moeten tot een klasse behoren 
+die voorzien is van een lidfunctie <tt>geefExhashindex()</tt>.
+Wil je dus strings opbergen, moet je een nieuwe stringklasse maken die
+zo een index heeft. Hieronder een voorbeeld van een stukje code dat
+een index berekent voor een c-string <tt>s</tt>
+<pre>
+    unsigned int even=0;
+    int len=strlen(s);
+    for (int i=0;i&lt;len;i++){
+        unsigned int pl=s[i];
+        pl=pl*8+pl/32;//eerste  4 bits achteraan;
+        even=even*253+pl;
+        //pl*((unsigned int)1 &lt;&lt; 24)+even/37;
+    }
+    unsigned int even2=0;
+    int aantbits=sizeof(int)*8;
+    for (int i=0;i &lt; aantbits/2;i++)
+        even2+=(even&gt;&gt;i)*((unsigned int)1 &lt;&lt; (aantbits-1-i));
+    return even2^even;
+</pre>
+Is die hashfunctie goed ontworpen? Zijn de eerste bits van je
+sleutelwaarden voldoende verschillend? Zo niet, wat dreigt er dan te 
+gebeuren? Monitor je klasse <tt>Exhash</tt>: houd  gegevens bij die
+aangeven of de alles goed verdeeld is. Zorg ervoor dat de destructor
+van <tt>Exhash</tt> deze gevens uitschrijft.
+<p>
+</OL>
+
+</HTML>
