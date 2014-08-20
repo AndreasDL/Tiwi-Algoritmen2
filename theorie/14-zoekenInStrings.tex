@@ -1,0 +1,58 @@
+\chapter{Zoeken in strings}
+Dit hoofdstuk geeft uitleg over verschillende methodes om strings op te zoeken in een tekst.
+Hierbij veronderstellen we dat we alle locatie willen vinden waar de string voorkomt. Merk op dat een string met zichzelf kan overlappen.
+\npar
+Daarvoor maken we gebruik van volgende terminologie:
+\begin{itemize}
+\item het patroon P dat we zoeken lengte = m 
+\item tekst T met lengte = n
+\item alfabet $\sum$ met d karaters 
+\end{itemize}
+
+\section{Variabele tekst}
+\subsection{Eenvoudige methode}
+\mijnfiguur[ht]{width=0.9\textwidth}{stringeen}{}
+Deze methode is de eenvoudigste en zoekt gewoon of P vanaf een positie j voorkomt in T door de overeenkomstige karakters (op positie i) te vergelijken (P[i] == T[j+i-1] $\rightarrow$ i++; ). Indien er een verschillend karakter gevonden wordt zullen we de start positie eentje opschuiven (j++;) en opnieuw de karakters van P vergelijken.
+\npar
+Als de strings regelijk random zijn en we een groot alfabet hebben zal de eerste letter vaak verschillen waardoor we meestal na 1 vergelijking al kunnen opschuiven. Het gemiddeld geval is dan ook O(n).
+\npar het slechtste geval is O(nm)dit doet zich voor als de eerste O(m) karakters van P op O(n) posities overeenkomen.(bv aaaab zoeken in aaaa....aaaaab) Dit lijkt zeer onwaarschijnlijk, maar als we de technieke gebruiken voor binaire strings of DNA strings met een klein alfabet is dit wel problematisch.
+
+\subsection{Gebruik van de Prefixfunctie}
+\subsubsection{Prefixfunctie}
+\begin{table}[h]
+\begin{tabular}{lrrrrrrrrr}
+\textbf{index} &1 &2 &3 &4 &5 &6 &7 &8 &9 \\
+\textbf{str} &a &a &b &a &a &b &a &b &b \\
+                  \\
+\textbf{p()} &0 &1 &0 &1 &2 &3 &4 &0 &0
+\end{tabular}
+\end{table}
+De prefix functie p() van een string P bepaalt voor elke stringpositie i de lengte van het langste prefix van P, die overeenkomst met een deelstring van P, eindigend bij de positie i (1 <= i <= m). p(i) is dus steeds kleiner dan i en p(1) = nul.
+
+\begin{lstlisting}
+vector<int> PrefixFunction(string S) {
+    vector<int> p(S.size());
+    int j = 0;
+    for (int i = 1; i < (int)S.size(); i++) {
+        while (j > 0 && S[j] != S[i])
+            j = p[j-1];
+
+        if (S[j] == S[i])
+            j++;
+        p[i] = j;
+    }   
+    return p;
+}
+\end{lstlisting}
+\clearpage
+\subsubsection{Een eenvoudige lineaire methode}
+\mijnfiguur[ht]{width=0.85\textwidth}{prefix}{}
+Zoals je kan zien op \ref{prefix} zien we dat we het gevonden stuk string kunnen hergebruiken. We hebben namelijk ABABA al gevonden, echter de C klopt niet. Door nu echter de AB door te schuiven vermijden we extra vergelijkingen die toch negatief zouden zijn.
+\npar
+We berekenen m prefix waarden wat $\theta(m)$ tijd inneemt (gemiddeld). Dit betekent dat de buitenste herhaling gemiddeld (geatmortiseerd) O(1) is. Om dat aan te tonen moeten we gebruik maken van een potentiaal functie, de potentiaal komt overeen met de prefixfunctie zelf. 
+Deze vormt zeker een bovengrens voor de uitvoeringstijd, want ze is initieel nul, en wordt nooit negatief. In de buitenste herhaling wordt ze minstens een kleiner (want we schuiven een op (zie 2 in de figuur)).
+\npar
+De afname van de potentiaal in de binnenste herhaling is dus minstens zo groot als het werk in die herhaling. De geatmortiseerde tijd van een buitenste herhaling is haar echte tijd plus de toename in potentiaal en dus 0(1). Aangezien er m-1 buitenste herhalingen zijn, is de totale performantie inderdaad $\theta(n)$.
+\clearpage
+\subsubsection{Knurth-Morris-Pratt}
+\mijnfiguur[ht]{width=0.85\textwidth}{kmp}{}
