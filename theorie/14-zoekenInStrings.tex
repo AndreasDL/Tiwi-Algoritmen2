@@ -55,53 +55,7 @@ Deze vormt zeker een bovengrens voor de uitvoeringstijd, want ze is initieel nul
 De afname van de potentiaal in de binnenste herhaling is dus minstens zo groot als het werk in die herhaling. De geatmortiseerde tijd van een buitenste herhaling is haar echte tijd plus de toename in potentiaal en dus 0(1). Aangezien er m-1 buitenste herhalingen zijn, is de totale performantie inderdaad $\theta(n)$.
 \clearpage
 \subsubsection{Knurth-Morris-Pratt}
-\begin{itemize}
-\item Zie link in de README $\rightarrow$ KMP in my own words (http://jakeboxer.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/)
-\item gebruikt de prefix functie
-\item beperkt het aantal binnenste iteraties 
-\item P wordt met T vergeleken op een bepaalde positie:
-\begin{itemize}
-\item geen overeenkomst meer tussen P[i] en T[j]
-\item foutpositie = 1: P 1tje naar rechts en T begint bij P[1]
-\item foutpositie $>$ 01: 
-\begin{itemize}
-\item correcte prefix van P met lengte i-1 gevonden
-\item eindigen bij positie j-1
-\item P zo weinig mogelijk naar rechts verschuiven
-\begin{itemize}
-\item kortere prefix van P komt overeen met T tot positie j-1
-\item kan begin zijn van volgende overeenkomst van P met T
-\item langste van die kortere prefixen gebruiken
-\item komt overeen met P: eindigend bij positie i-1 en lengte = p(i-1)
-\item als P[ p(i-1) + 1 ] == T[j] : Vergelijke tussen P en T kan hier hervat worden, anders P opschuiven
-\end{itemize}
-\end{itemize}
-\item P[i] en T[j] verschillen:
-\begin{itemize}
-\item er zal terug een fout optreden als P[ (i-1)+1 ] == P[i]
-\item kortere, maar langst mogelijk prefix moet uitgeprobeerd worden waarbij karakter rechts ervan verschilt met P[i]
-\item verschuiving vaak groter dan bij eenvoudige lineaire methode
-\item karakter rechts verschilt van P[i], garandeert niet dat overeenkomt met T[j]; eventueel verder doorschuiven is nodig
-\end{itemize}
-\end{itemize}
-\item bijkomende vereiste voor nieuwe prefix heeft enkel met P te maken
-\begin{itemize}
-\item nieuwe prefixwaarden p2(i) voor elke positie in P op voorhand bepalen.
-\item met behulp van foutfunctie f(i) = p2(i-1) + 1
-\item voor elke mogelijk fout positie i:
-\begin{itemize}
-\item i $>$ 1 : meteen patroon positie geven waarmee T[j] vergeleken moet worden
-\item i == 1 : 
-\begin{itemize}
-\item P met 1 positie opschuiven
-\item P[1] vergelijken met T[j+1]
-\item f(1) moet 1 zijn, dus p2(0) = 0
-\end{itemize}
-\end{itemize}
-\end{itemize}
-\end{itemize}
-{\Huge SAY WHATT??}
-\npar We doen eignelijk niets magisch
+We doen hetzelfde als hierboven maar met wat gepruts kunnen we het aantal binnenste iteraties verder beperken.
 \begin{enumerate}
 \item bepaal de prefix functie
 \begin{tabular}{lrrrrrrrr}
