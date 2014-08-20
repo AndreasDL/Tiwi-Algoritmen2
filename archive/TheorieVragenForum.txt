@@ -1,0 +1,51 @@
+Topdown verwijderen RZBs + efficientie (geen bewijs)
+koppelen in willekeurige graaf, koppelen in bipartite graaf, efficient algoritme daarvoor + performantie verklaren
+Karp Rabin + performantie uitlegge
+
+treaps
+bellmand ford
+mierenkolonie
+
+eigenschappen, operaties en performantie kd-trees
+wat is een stroomnetwerk en wat is de maximale stroom? Geef de methode van Ford-Fulkerson en toon dan dat deze correct is.
+geef een efficiënte methode om de langste gemeenschappelijke deelstring tussen twee string efficiënt te vinden en geef de performantie.
+
+BU rzw delete
+johnson
+inverted files: basis zonder uitbreidingen.
+
+bespreek uitgebreid het bottom-up verwijderen van een sleutel in een RZB, wat is het efficiëntie?
+Wat zijn sterk samenhangende componenten? Geef een efficiënt algoritme om deze te vinden en geef de efficiëntie. Leg ook uit waarom dit algoritme klopt.
+Wat is een suffixboom? bespreek het verlengen van een suffixboom gedetailleerd, wat is de efficientie?
+
+Lineair hashing, definitie operaties performantie
+Bellman-Ford uitleg + performantie
+SuffixTabel
+
+Bespreek eigenschappen en operaties van B+-tree
+Wat is het probleem bij clustering, geef een efficiënt algoritme hiervoor en wat is zijn performantie
+Geef de eigenschappen, operaties en performantie van patricia tries
+
+Bewijs performantie splaybomen
+uitleg koppelen in 2ledige graaf + gebruikte algoritme en efficiëntie
+Uitleg shift and + performantie (met veel bijvragen over de onderliggende werking en betekenis)
+
+binomial queues, pairing heaps
+transitieve sluiting, met uitleg, methodes en performantie
+LGD
+
+splayoperatie: perf + bewijs
+bruggen en dubbellijnsamenhangende componenten + algoritme uitleggen + efficientie + waarom (geen bewijs).
+invertex files
+
+Opstellen optimale zoekboom + performantie, geen code
+Willekeurige koppeling + tweeledige graaf ( via stroomnetwerk, zeker niet Gale shapley uitleggen!)
+Strings in reguliere expressies herkennen + implementatie en performantie (v opstellen, plaats en herkennen) van de 3 methoden
+
+verwijderen bij splays + performantie en waarom?
+eerste heuristiek van booyer moore
+constructie indexen bij testzoekmachines
+
+Quadtrees efficientie performantie
+efficiente union fin performantie
+shift and met foutjes performantie

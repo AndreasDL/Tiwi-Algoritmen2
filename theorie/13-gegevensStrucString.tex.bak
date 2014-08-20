@@ -1,0 +1,151 @@
+\chapter{Gegevensstructuren voor strings}
+\section{Inleiding}
+\begin{itemize}
+\item Sleutels nu niet rangschikken op de afzonderlijke sleutelelementen (in hun geheel), maar op de elementen van de sleutel een voor een. Dit wordt Radix Search genoemd.
+\item toegangstijd bij radix search is competief met die van hashing en binaire zoekbomen. 
+\item in het slechte geval blijft deze toegangstijd meestal goed, zonder de complexiteit van evenwichtige zoekbomen te gebruiken.
+\item Ze kunnen wel veel geheugen innemen
+\item de individuele elementen van de sleutel moeten vlot toegankelijk zijn. 
+\end{itemize}
+
+Hieronder worden een aantal mogelijk implementaties gegeven waarbij steeds verondersteld wordt dat geen enkele sleutel een prefix is van een andere.
+\clearpage
+\section{Digitale zoekbomen}
+\begin{itemize}
+\item Vergelijkbaar met gewone zoekbomen, de sleutels worden opgeslagen in de knopen, toevoegen \& verwijderen gebeurd op dezelfde manier
+\item ER is een verschil : de juiste deelboom wordt niet bepaald door de zoeksleutel te vergelijken met de sleutel in de knoop, maar enkel door het volgende element van de zoeksleutel. Vergelijken gebeurd van links naar rechts .
+\item Meestal worden hiervoor de bits gebruikt van de sleutel, al hoeft dat niet zo te zijn.
+\item In order overlopen van de boom, zal de sleutels NIET altijd in volgorde teruggeven. De sleutels links zijn welliswaar kleiner dan de sleutels rechts en ze hebben dezelfde beginbits. Toch kan de wortel eender waar vallen tussen zijn 2 kinderen.
+\item Elke sleutel in een digitale zoekboom bevindt zich ergens op de weg vanuit de wortel bepaald door de opeenvolgende bits van deze sleutel. De langste weg in de boom is hierdoor beperkt door het aantal bits van de langste opgeslagen sleutel (en dus ook de hoogte).
+\item Deze bomen zeer performant voor een groot aantal sleutels met een kleine bitlengte
+\item Als we veronderstellen dat de kans op een nul of een bit steeds 50\% is waardoor de boom mooi verdeeld zal zijn, dan is de gemiddelde weg O( lg(n) ). Het aantal vergelijking is trouwens nooit meer dan het aantal bits van de zoeksleutel.
+\end{itemize}
+
+\begin{mdframed}[leftmargin=10pt,rightmargin=10pt]
+\textbf{Digitale zoekbomen:} net als gewone zoekbomen, maar we kijken naar de opeenvolgende bits ipv de hele sleutel. De performantie is vergelijkbaar met de performantie van rood zwarte bomen, terwijl hun implementatie stukken eenvoudiger is. Het enige beperkende minpunt is dat we effici\"ente toegang moeten hebben tot de bits van de sleutels en dat er enkel woordenboekoperaties mogelijk zijn.
+\end{mdframed}
+\clearpage
+\section{Tries}
+\mijnfiguur[ht]{width=6cm}{trie}{}
+Een tie is een digitale zoekstructuur die wel de volgorde van de opgeslagen sleutels behoudt.
+Er zijn verschillende soorten:
+
+\subsection{Binaire tries}
+\mijnfiguur[ht]{width=5cm}{binaryTrie}{}
+\begin{itemize}
+\item zoekweg wordt volledig bepaald door de opeenvolgende bits van de zoeksleutel.
+\item de sleutels worden hier enkel in de bladeren opgeslagen, waardoor een inorder doorloop wel de sleutels in de juiste volgorde teruggeeft.
+\clearpage
+\item de zoeksleutel moet niet meer vergeleken worden met een sleutel in elke knoop op e zoekweg. Zoeken en toevoegen gebruiken dus enkel de opeenvolgende bits van de zoeksleutel om de juiste weg te volgen.
+\begin{itemize}
+\item Eindigen we in een ledige boom $\rightarrow$ sleutel niet in de boom, eventueel toevoegen
+\item Eindigen we in een blad $\rightarrow$ Dit blad is de enige mogelijk kandidaat om de sleutel te zijn. Een sleutelvergelijking geeft uitsluitsel. Indien het de sleutel niet is en we hem willen toevoegen dan zijn er verschillende gevallen:
+\begin{enumerate}
+\item indien het eerst volgende bit verschilt, kunnen we het blad eenvoudig weg vervangen door een knoop en vervolgens het originele blad en de nieuwe sleutel kinderen maken van die knoop.
+\item Indien er nog bits gelijk zijn, moet het blad vervangen worden door een reeks van opeenvolgende knopen. Het vervangen moet dus herhaald worden zolang de bits gelijk zijn. Bij de eerste verschillende bit krijgt de laatste knoop steeds 2 kinderen.
+\end{enumerate}
+\end{itemize}
+\item We zien de nadelen van deze gegevensstructuur: indien de sleutels veel gelijke beginbits hebben, zal de boom slechter verdeeld zijn, we krijgen dus veel knopen met maar 1 kind. 
+\item Een trie met n gelijkmatig verdeelde sleutels heeft gemiddeld n/ln2 $\approx$ 1.44n inwendige knopen.
+\item Verder moeten we ook opmerken dat bits van een sleutel in zijn geheel geen prefix mogen vormen van een langere sleutel; Als dit gebeurd dan zijn er geen bits meer over om een onderscheid te vormen.
+\item De structuur van een trie is onafhankelijk van de volgorde waarin de sleutels toegevoegd worden. Voor elke verzameling sleutels is er dus slechts een trie mogelijk.
+\item een trie maakt geen gebruik van sleutelvergelijkingen tijdens het afdalen, enkel de opeenvolgende bits worden getest. Eenmaal afgedaald volgt er eventueel een sleutelvergelijking. Dit is interessant voor als de sleutels bijvoorbeeld lange strings zijn. 
+\item Een trie opgebouwd uit n gelijkmatig verdeelde sleutels zal nooit meer dan O(ln(n)) bitoperaties nodig hebben om zoeken of toevoegen uit te voeren. Dit aantal is nog eens beperkt door de bitlengte van de langste sleutel. De bovengrens van de hoogte wordt dan ook gevormd door deze lengte.
+\end{itemize}
+
+\begin{mdframed}[leftmargin=10pt,rightmargin=10pt]
+\textbf{Binaire tries:} Zelfde als digitale zoekbomen, maar slaan nu alle sleutels op in de bladeren, waardoor de inorder doorloop wel klopt. Werken door het vergelijken van opeenvolgende bits $\rightarrow$ een sleutel mag nooit een prefix zijn van een andere.
+\end{mdframed}
+
+\clearpage
+\section{Meerwegs tries}
+\mijnfiguur[ht]{width=15cm}{mtrie}{}
+\begin{itemize}
+\item meer dan 1 bit tegelijk vergelijken $\rightarrow$ meer dan 2 kinderen per boom.
+\item zoeken en toevoegen werkt analoog aan een binaire trie, in elke knoop op de zoekweg moet nu een m-wegbeslissing genomen worden, op grond van het volgende sleutelelement. Om deze operatie O(1) te houden, kan men de wijzers naar de kinderen opslaan in de tabel en deze indexeren met het sleutel element.
+\item toevoegen van een sleutel kan ook resulteren in de aanmaak van een opeenvolgende reeks van inwendige knopen met maar 1 kind.
+\item Aangezien de kinderen van de knoop geordend zijn volgens de sleutelelementen, kunnen sleutels opnieuw in algabetische volgorde uit de boom opgehaald worden.
+\item performantie is analoog aan binaire tries. Zoeken of toevoegen vereis gemiddeld O( logm n ) testen. Het aantal testen is nooit groter dan de lengte van de langst opgeslagen sleutel.
+\item Mag de sleutel een prefix zijn van een andere? 
+\begin{itemize}
+\item Is mogelijk als we de informatie in inwendige knopen opslaan, een inwendige knoop vormt immers de prefix van de sleutel.
+\item Vervolgens gebruiken we een afsluitkarakter, dat nergens anders kan voorkomen, om een onderscheid te maken tussen de prefix en de inwendige knoop. De inwendige knoop krijgt met andere woorden een extra kind dat overeenkomt met dit afsluit element.
+\end{itemize}
+\clearpage
+\item een nadeel is dat deze trees veel geheugen gebruiken. De knopen dicht bij de wortel hebben meestal veel kinderen, maar dieper in de boom hebben we vaak weinig kinderen. (dit toch plaats vrijhouden voor eventueel toekomstige kinderen). Dit kan opgelost worden:
+\begin{itemize}
+\item geen tabel te gebruiken, maar een gelinkte lijst om de kindwijzers bij te houden. Dit is iets trager, maar bespaard wel geheugen. Elke knoop in deze lijst heeft een sleutelelement. De elementen zijn gesorteerd.
+\item Gebruik maken van verschillende mechanismen: zo kan men bovenaan in de boom wel tabellen gebruiken, in het midden hashmaps en beneden gelinkte lijsten.
+\item een andere mogelijkheid is de volledige trie enkel voor de eerste niveaus te gebruiken en dan in de lagere lagen over te schakelen op een andere gegevensstructuur.
+\end{itemize}
+\end{itemize}
+
+\begin{mdframed}[leftmargin=10pt,rightmargin=10pt]
+\textbf{Meerwegs tries:} Zelfde als binaire tries, maar nu met meerdere bits tegelijk, wat zorgt voor meerdere kinderen. Doordat het aantal kinderen nu meer kan zijn dan 2, kunnen we eventueel ook prefixen van sleutels toevoegen.
+\end{mdframed}
+\clearpage
+\section{Patricia tries}
+\mijnfiguur[ht]{width=15cm}{patricia}{}
+\begin{itemize}
+\item Veel trie knopen hebben maar 1 kind $\rightarrow$ geheugen verlies
+\item 2 soorten knopen 
+\begin{enumerate}
+\item Inwendige knopen met kindwijzers
+\item bladeren met sleutel, zonder kinderen.
+\end{enumerate}
+\item Practical Algorithm To Retrieve Information Coded In alphanummeric lost deze problemen op door:
+\begin{itemize}
+\item enkel knopen met meer dan een kind toegelaten. In deze knoop slaat men de index van het daar te testen sleutel element op.
+\item Gebruik maken van een soort knoop. Sleutels worden wel opgeslagen in inwendige knopen. Bladeren worden nu vervangen door wijzers naar deze knopen; deze wijzen dus terug omhoog in de boom.
+\end{itemize}
+\clearpage
+\item We behandelen enkel binaire tries, de knopen bevatten dan 1 sleutel en 2 wijzers. Of de wijzers inwendige knopen of kinderen bevatten wordt afgeleid uit de indices bij de betrokken knopen. Al kan hiervoor ook een extra logische waarde voorzien worden. Voor n sleutels zijn er dus n knopen en bijgevolg 2n wijzers waarvan er n naar bladeren wijzen en n-1 naar inwendige knopen. (een wijzer wordt dus niet gebruikt)
+\item patricia tries negeren sleutels in de knopen op de zoekweg en test enkel de aangeduide zoeksleutelbit. Op het einde volgt een sleutelvergelijking wanneer een wijzer naar een hogere gelegen knoop refereert (en we dus in een blad komen).
+\item elke sleutel ligt opgeslagen op zijn eigen zoekweg en zowel als interne knoop en als blad gevonden wordt.
+\item toevoegen begint met zoeken. Eenmaal we de plaats gevonden hebben zoeken we de meest linkse bit waarin beide sleutels verschillen en zoeken de meest linkse bit waarin beide sleutels verschillen, en zoeken de sleutel een tweede maal in de boom, waarbij die bitpositie vergeleken wordt met de bitposities (indices) bij de knopen op de zoekweg: (we zoeken of de sleutel niet ergens anders hoger in de boom kan staan)
+\begin{enumerate}
+\item Komen we nu uit in een hogere met een hogere bitpositie dan de onderscheidende bit, dna moeten we een nieuwe knoop tussenvoegen waar die bit getest wordt.  Want bij die knoop zal de trie een knoop met een nulwijzer hebben.
+\item Vinden we geen enkele knoop met een hogere bitpositie dan zou zoeken in de onderlggende trie ge\"indigd zijn met een blad. We kunnen nu de laatste sleutelwijzer vervangen door een wijzer  naar een nieuwe knoop met de nieuwe sleutel, de index van de onderscheidende bit en wijzers naar de originele knoop \& de nieuwe knoop
+\end{enumerate}
+\item bemerk dat hierboven slechts een knoop toegevoegd wordt, die de meeste linkse onderscheidende bit tussen de zoeksleutel en de gevonden sleutel aanduidt. Bij een gewone trie was dit niet het geval en werden er soms meerdere knopen tussen gevoegd.
+\item De structuur hangt hier wel af van de volgorde waarin de sleutels toegevoegd worden
+\item In een binaire patricia tree met n gelijkmatig verdeelde sleutels vereist zoeken of toevoegen van een willekeurig gemiddeld O(lg(n)) bitvergelijkingen, en nooit meer dan de bitlengte van de zoeksleutel. De hoogte van de boom en dus het maximaal aantal bitvergelijkingen worden opnieuw beperkt door de lengte van de langst opgeslagen sleutel.
+\item zoektijd in een gewone trie hangt af van de sleutellengte, patricia tries testen echter meteen de belangrijkste bits, zodat de zoektijd niet toeneemt met de sleutellengte. Ze zijn dus beter geschikte voor lange sleutels.
+\item Een patricia trie is een alternatieve voorstelling van een gewone trie $\rightarrow$ dus ook de volgorde van de sleutels blijft bewaard.
+\end{itemize}
+
+\begin{mdframed}[leftmargin=10pt,rightmargin=10pt]
+\textbf{Patricia Tries:} Combineren de voordelen van digitale zoekbomen en tries; 
+\begin{itemize}
+\item ze gebruiken niet meer geheugen dan nodig door de sleutels intern op te slaan (n sleutels = n knopen). 
+\item Ze zijn even effici\"ent als tries (gemiddeld O(lg(n)) bittesten + sleutel vergelijking. 
+\item Ze respecteren de volgorde van de sleutels zodat bijkomende operatie mogelijk zijn.
+\end{itemize}
+\end{mdframed}
+
+\section{Ternaire zoekbomen}
+\mijnfiguur[ht]{width=10cm}{ternairetrie}{}
+\begin{itemize}
+\item een alternatieve voorstelling van een meerwegstrie
+\item m kindwijzers in een knoop $\rightarrow$ geheugen verspilling.
+\item opgelost door een ternaire boom te gebruiken waarvan elke knoop een sleutel element bevat.
+\item zoeken zal altijd een zoeksleutel met het element in de huidige knoop vergelijken. Indien het element kleiner is gaan we naar links, groter naar rechts. Indien het element gelijk is zoeken we verder in de middenste boom.
+\item Het element dat we vergelijken wordt niet meer bepaald door de diepte van de boom. 
+\item We gebruiken terug een geschikt afsluitelement.
+\item een sleutel wort gevonden wanneer we met zijn afsluitelement bij een knoop met datzelfde element terrecht komen. De boom bevat de zoeksleutel niet wanneer we bij een nulwijzer terechtkomen, of wanneer we het einde van de zoeksleutel bereiken vooraleer een afsluitelement in de boom gevonden werd.
+\item Toevoegen begint met zoeken, gevolgd door het aanmaken van een reeks opeenvolgende knopen voor alle volgende elementen van de zoeksleutel, net zoals bij oorspronkelijke tries.
+\item tijd nodig is evenredig met de sleutellengte
+\item het aantal knopen is onafhankelijk van de toevoegvolgorde.
+\item de volgorde van de opgeslagen sleutels blijft behouden.
+\item opvragen van een voorloper of opvolger is ook mogelijk.
+\item Ternaire bomen hebben een aantal voordelen:
+\begin{itemize}
+\item Ze passen zich goed aan , aan onregelmatig verdeelde zoeksleutels, als blijkt dat de sleutels in de praktijk een gestructureerd formaat hebben bv 26 vrs letters, zal de boom zich hier automatisch naar gedragen.
+\item zoeken naar afwezige sleutels is meestal zeer effici\"ent, doordat er maar enkele sleutelelementen getest worden.
+\item ze laten meer complexere zoekoperaties toe zoals zoeken naar sleutels waarvan bepaalde elementen niet gespecificeerd zijn of het opzoeken van alle sleutels die niet meer dan 1 element verschillen van de zoeksleutel.
+\end{itemize}
+\item Er zijn ook enkele verbeteringen mogelijk:
+\begin{itemize}
+\item Het aantal knopen kan beperkt worden door sleutels in bladeren op te slaan zodra men ze kan onderscheiden.
+\end{itemize}
+\end{itemize}
