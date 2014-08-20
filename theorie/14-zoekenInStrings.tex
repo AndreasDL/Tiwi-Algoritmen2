@@ -75,7 +75,7 @@ p():  &0 &0 &1 &2 &3 &4 &0 &1
 \item we hebben dus een bijkomende vereiste voor de prefix functie, namelijk dat het karakter rechts van de prefix verschilt van P[i]. Hierdoor zal de verschuiving groter zijn dan die van de originele methode. Dat het karakter verschilt kan niet garanderen dat het overkomt met T[j] (maar als het hetzelfde is dan is het zowieso fout dus), daarom moeten we eventueel nog een kleinere prefix nemen.
 \item aangezien deze vereiste enkel afhankelijk is van P kunnen we ze op voorhand volledig bepalen, dit noemen we p2() of p'().
 \end{itemize}
-
+\clearpage
 \item \textbf{Uiteindelijk gebruiken we nog een foutfunctie f(i)}
 \begin{itemize}
 \item (i) = p'(i-1) + 1
@@ -88,10 +88,99 @@ p():  &0 &0 &1 &2 &3 &4 &0 &1
 het aantal karakter vergelijkingen van dit algoritme is $\theta(n)$. Want na elke verschuiving van P wordt hoogstens een karakter van T getest dat vroeger reeds getest werd. (Als het opnieuw niet overeenkomt wordt er doorgeschoven). Het totaal aantal karaktervergelijking is dus hoogstens gelijk aan de lengte T, plus het aantal verschuivingen. Elke verschuiving gebeurd over minstens 1 positie, zodat het aantal verschuivingen O(n) is. Dit levert dus idd $\theta(n)$.
 \npar
 Aangezien de voorbereiding van de prefix functie, de nieuwe prefixfunctie en de foutfunctie $\theta(m)$ is, wordt de totale performantie $\theta(m+n)$
-
+\clearpage
 \subsection{Karp-Rabin}
 \mijnfiguur[ht]{width=0.9\textwidth}{krbasics}{}
-Indien getallen vergelijken sneller gaat dan strings, de stings omzetten naar getallen (met hashing) en die vergelijken.
 \begin{itemize}
-\item 
+\item Indien getallen vergelijken sneller gaat dan strings, de stings omzetten naar getallen (met hashing) en die vergelijken.
+\item als we dit doen krijgen we $d^{m}$ verschillende strings met lengte m, en dus evenveel getallen $\rightarrow$ te groot $\rightarrow$ delen door priemgetal $\rightarrow$ conflicten (zoals bij hashing). 
+\item De getallen moeten in een processor woord passen!
+\item gelijke strings $\rightarrow$ gelijke getallen maar gelijke getallen != gelijke strings
+\item Op lossen door meerdere hashes te gebruiken of een volledige string vergelijking uit te voeren bij gelijke getallen
+
+\item Hoe bekomen we deze getallen? 
+\begin{itemize}
+\item waarde deelstring op j+1 halen uit de waarde op j en dat in O(1)
+\item Hiervoor beschouwen we een d tallig stelsel, waarbij elk stringelement voorgesteld wordt door een cijfer tussen 0 en d-1
+\item H(p) = $\sum\limits_{i=1}^n$ dit vereist slechts m optellingen en evenveel vermenigvuldigingen. 
+\item om beperkte hashwaarde te bekomen, nemen we de rest. 
+\item doordat de rest van een som gelijk is aan de som van de resten van de termen, mogen we verder rekenen met de resten.
 \end{itemize}
+\item bewijs p103
+\item perfomantie: $\theta(n+m)$
+\item hoe p kiezen?
+\begin{itemize}
+\item p vast : hierbij nemen we een zo groot mogelijk priemgetal zodat $pd <= 2 ^w$.
+Zo groot mogelijk zodat we minder valse positieven hebben, niet groter dan processor woord voor de effici\"entie.
+\item p random: een of meerdere random p waarden gebruiken uit een interval.
+\end{itemize}
+\item Valse positieven?
+\begin{itemize}
+\item groter priemgetal nemen, maar let op processorwoord lengte
+\item Omvormen naar een Las-Vegas algoritme door nog een string vergelijking uit te voeren bij een positieven getallen vergelijking
+\item Herbeginnen met een nieuwe random p als dezelfde test fouten genereert.
+\item meerdere fingerprints/hashes tegelijk gebruiken
+\end{itemize}
+\item tweedimensionale patroonherkenning of random vormpjes mogelijk.
+\item tegelijk naar meerdere strings zoeken door verschillende hashwaarden te zoeken
+\end{itemize}
+
+\subsection{Shift-And / Shift-Or}
+\begin{itemize}
+\item eenvoudig, bitgeori\"enteerde methode die zeer effici\"ent werkt voor kleine patronen.
+\item maakt gebruik van dynamisch programmeren
+\item voor elke positie j in de tekst T worden de prefixen van P bijgehouden die eindigen op positie j. Dit zit in een eendimensionale tabel van m logische waarden.
+\item het $i^{de}$ element komt overeen met de prefix van lengte i.
+\item $R_{j}$ is de waarde die hoort die positie j, dan is $R_{j}$[i] waar als de eerste i karakters van p overeenkomen met de i tekstkarakters eindigt in j. Als P eindigt op j en $R_{j}$[m] waar is , dan hebben we P gevonden op plaats j-m+1
+\item T[J+1] kan sommige prefixen verlengen tot aan j+1; $R_{j+1}$ kan dus uit $R_{j}$ gehaald worden als volgt:
+\begin{itemize}
+\item $R_{j+1}$[1] = ( P[1] == T[j+1] )
+\item $R_{j+1}$[i] = ( $R_{j}$[i-1] \&\& P[i] == T[j+1] ) voor 1 $<$ i $<=$ m
+\end{itemize}
+\item Performantie: $\theta(nm)$ (wordt hieronder nog verder verbeterd)
+\item bewerkingen zijn voor elk tabelelement analoog en we kunnen op meerdere bits tegelijk werken in het processorwoord.
+\item $R_{j+1}$ is afhankelijk van T[j+1] == P[i]
+\item P is vast dus op voorhand de posities bepalen waarvoor T[j+1] == [i] ; Dit doen we door een tabel S op te stellen met d woorden (met d = grootte van het alfabet).
+\mijnfiguur[ht]{width=0.9\textwidth}{tabelS}{}
+\item eenmaal we S hebben , moeten we niet meer vergelijken, maar kunnen we rechtstreeks in de tabel opzoeken of het waar of false is.
+\item $R_{j+1} = Schuif(R_{j}) EN S[T[j+1]]$ Hierbij veronderstellen we dat er vooraan een waar bit (1) wordt ingeschoven. De waarde $R_{j+1}$ wordt dan volledig bepaald door de eerste bit van S[T[j+1]], maw ze is dus : ( T[j+1] == P[1]).
+\item Deze operaties kunnen elk met 1 processor instructie gebeuren : O(1)
+\item $R_{1}$ heeft geen voorloper $\rightarrow$ beginnen met een tabel die volledig onwaar is.
+\item Shift-or : nul inschuiven; schift-and: 1 inschuiven
+\item totale performantie is $\theta(n+m)$ ; zeer snelle methode voor kleine strings die bovendien weinig geheugen gebruikt.
+\end{itemize}
+\clearpage
+\subsection{Boyer-Moore}
+Boyer-Moore is nog performanter dan bovenstaande methodes. Het zoekt naar een patroon door het patroon van links naar rechts te schuiven over de tekst. \\
+\mijnfiguur[ht]{width=0.9\textwidth}{BMShiftDir}{}
+
+Een belangrijk verschil met de voorgaande methodes is dat we het patroon zelf van rechts naar links aflopen.\\
+\mijnfiguur[ht]{width=0.9\textwidth}{BMCompModel}{}
+
+boyer-moore maakt gebruik van 2 heuristieken om de performantie te garanderen.
+\clearpage
+\subsubsection{Verkeerde karakter}
+Als we gestopt zijn bij een mismatch, dan kunnen we P naar rechts schuiven. Dit heeft echter slechts zin als het laatste character van P overeenkomt met het bovenliggende char in T (anders direct terug een fout). Je kan zien in de figuur dat we zullen doorschuiven tot waar B overeenkomt. Immers het stuk van C tot aan B in het pattern bevat geen eerdere B, en kan dus ook geen matches veroorzaken.\\
+\mijnfiguur[ht]{width=0.9\textwidth}{BMBadChar1}{}
+
+Een ander geval is dat er geen B in het Pattern zit, dan kunnen we direct het hele patroon doorschuiven.
+\mijnfiguur[ht]{width=0.9\textwidth}{BMBadChar2}{}
+\clearpage
+Er bestaan echter verschillende varianten/implementaties van deze heuristiek. Merk op dat als we de heuristiek fout implementeren we foutieve verschuivingen kunnen krijgen in de omgekeerde richten. Als we bij \ref{BMBadChar1} bijvoorbeeld een B hadden rechts in het patroon zou men het patroon terug schuiven, wat uiteraard niet de bedoeling is.
+\begin{enumerate}
+\item \textbf{Uitgebreide heuristiek:} Hierbij vermeden we negatieve verschuivingen, door de meest rechtste P te nemen, links van de patroonpositie. Hierdoor is de verschuiving steeds positief
+\item We houden een 2-dim tabel bij om de verschuiving voor elke mogelijk letter op elke mogelijk positie te bepalen. Bepalen door P eenmaal van links naar rechts te overlopen
+\item Compromis tussen plaats en tijd:
+\begin{itemize}
+\item geen tabel maar een gelinkte lijst bijhouden die dalend gesorteerd is.
+\item iets trager, maar gebruikt minder geheugen.
+\end{itemize}
+
+\item \textbf{Variant van Horspool:} betere oplossing die dezelfde tabel als de originele methode gebruikt. Voor elk karakter in het alfabet bevat de tabel de meest rechtse positie j van dat karakter in P , links van positie m. Als het karakter daar niet voorkomt dan is j = 0. Wanneer er bij het vergelijken een fout optreedt bij patroonpositie i en tekstpositie k dan moet P opgeschoven worden. Hierbij moet het nieuwe karakter terug gelijk zijn, dit kunnen we vinden met index T[k+m-i]. Vervolgens verschuiven we m-j positief, wat steeds positief is.
+\npar
+De verschuiving is bovendien onafhankelijk van de foutieve patroon positie i , en meestal groter dan de oorspronkelijke versie.
+
+\item \textbf{Variant van Sunday:} gebruikt dezelfde tabel als de originele methode, maar als er een fout optreed tussen patroon positie i en tekstpositie k, dan zorgt men ervoor dat bij de verschuiving het gepaste patroonkarakter tegenover tekstkarakter T[k+m-i+1] terecht komt (net voorbij P[m] dus).
+\npar
+Hierbij is ook de verschuiving onafhankelijk van de foutieve patroonpositie i. Het gevolg hiervan is dat de karakters van P die met T vergeleken moeten worden, geen rol meer speelt. We kunnen ze dus overlopen op de kans dat ze voorkomen.
+\end{enumerate}
