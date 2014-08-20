@@ -55,4 +55,82 @@ Deze vormt zeker een bovengrens voor de uitvoeringstijd, want ze is initieel nul
 De afname van de potentiaal in de binnenste herhaling is dus minstens zo groot als het werk in die herhaling. De geatmortiseerde tijd van een buitenste herhaling is haar echte tijd plus de toename in potentiaal en dus 0(1). Aangezien er m-1 buitenste herhalingen zijn, is de totale performantie inderdaad $\theta(n)$.
 \clearpage
 \subsubsection{Knurth-Morris-Pratt}
-\mijnfiguur[ht]{width=0.85\textwidth}{kmp}{}
+\begin{itemize}
+\item Zie link in de README $\rightarrow$ KMP in my own words (http://jakeboxer.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/)
+\item gebruikt de prefix functie
+\item beperkt het aantal binnenste iteraties 
+\item P wordt met T vergeleken op een bepaalde positie:
+\begin{itemize}
+\item geen overeenkomst meer tussen P[i] en T[j]
+\item foutpositie = 1: P 1tje naar rechts en T begint bij P[1]
+\item foutpositie $>$ 01: 
+\begin{itemize}
+\item correcte prefix van P met lengte i-1 gevonden
+\item eindigen bij positie j-1
+\item P zo weinig mogelijk naar rechts verschuiven
+\begin{itemize}
+\item kortere prefix van P komt overeen met T tot positie j-1
+\item kan begin zijn van volgende overeenkomst van P met T
+\item langste van die kortere prefixen gebruiken
+\item komt overeen met P: eindigend bij positie i-1 en lengte = p(i-1)
+\item als P[ p(i-1) + 1 ] == T[j] : Vergelijke tussen P en T kan hier hervat worden, anders P opschuiven
+\end{itemize}
+\end{itemize}
+\item P[i] en T[j] verschillen:
+\begin{itemize}
+\item er zal terug een fout optreden als P[ (i-1)+1 ] == P[i]
+\item kortere, maar langst mogelijk prefix moet uitgeprobeerd worden waarbij karakter rechts ervan verschilt met P[i]
+\item verschuiving vaak groter dan bij eenvoudige lineaire methode
+\item karakter rechts verschilt van P[i], garandeert niet dat overeenkomt met T[j]; eventueel verder doorschuiven is nodig
+\end{itemize}
+\end{itemize}
+\item bijkomende vereiste voor nieuwe prefix heeft enkel met P te maken
+\begin{itemize}
+\item nieuwe prefixwaarden p2(i) voor elke positie in P op voorhand bepalen.
+\item met behulp van foutfunctie f(i) = p2(i-1) + 1
+\item voor elke mogelijk fout positie i:
+\begin{itemize}
+\item i $>$ 1 : meteen patroon positie geven waarmee T[j] vergeleken moet worden
+\item i == 1 : 
+\begin{itemize}
+\item P met 1 positie opschuiven
+\item P[1] vergelijken met T[j+1]
+\item f(1) moet 1 zijn, dus p2(0) = 0
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\end{itemize}
+{\Huge SAY WHATT??}
+\npar We doen eignelijk niets magisch
+\begin{enumerate}
+\item bepaal de prefix functie
+\begin{tabular}{lrrrrrrrr}
+char: &a &b &a &b &a &b &c &a \\
+index:&0 &1 &2 &3 &4 &5 &6 &7 \\
+p():  &0 &0 &1 &2 &3 &4 &0 &1
+\end{tabular}
+\item We overlopen de string tot we een fout vinden op positie i (in P).
+\item i == 1 ? $\rightarrow$ p eentje naar rechts
+\item i $>$ 1  ? $\rightarrow$ een prefix vinden in P met lengte i-1 die eindigt op positie j-1 in T. Nu moeten we verschuiven volgende de prefix functie
+\item als P[ p(i-1) +1 ] == T[j] : na verschuiving komen deze letters overeen en kunnen we dus vanaf hier verder doen
+\item als dat niet overeenkomst moeten we P nog wat verder opschuiven tot P.firstChar terug gelijk is aan T[i]
+\item tot hier passen we eigenlijk gewoon de lineaire methode toe
+
+\item \textbf{als P(i) != T[j] hebben we direct terug een fout;} we hadden dus beter de 2e langste prefix genomen ipv de langste.
+\begin{itemize}
+\item we hebben dus een bijkomende vereiste voor de prefix functie, namelijk dat het karakter rechts van de prefix verschilt van P[i]. Hierdoor zal de verschuiving groter zijn dan die van de originele methode. Dat het karakter verschilt kan niet garanderen dat het overkomt met T[j] (maar als het hetzelfde is dan is het zowieso fout dus), daarom moeten we eventueel nog een kleinere prefix nemen.
+\item aangezien deze vereiste enkel afhankelijk is van P kunnen we ze op voorhand volledig bepalen, dit noemen we p2() of p'().
+\end{itemize}
+
+\item \textbf{Uiteindelijk gebruiken we nog een foutfunctie f(i)}
+\begin{itemize}
+\item (i) = p'(i-1) + 1
+\item Deze functie geeft voor elke patroonpositie i groter dan een meteen de patroon positie waarmee T[j] moet vergeleken worden.
+\item als we ook f(m+1) op die manier defini\"eren dan geeft die de nieuwe te testen patroon positie na het vinden van P. (Dus als we P vinden hoeveel moeten we dan schuiven om een volgende te vinden (overlap)).
+\item Als i == 1 moet P een positie opgeschoven worden en wordt P[1] vergeleken met T[j+1] daarom moet f(1) = 1 zijn en p'(0) = 0 ; p'(1)  = 0
+\end{itemize}
+\end{enumerate}
+
+het aantal karakter vergelijkingen van dit algoritme is $\theta(n)$. Want na elke verschuiving van P wordt hoogstens een karakter van T getest dat vroeger reeds getest werd. (Als het opnieuw niet overeenkomt wordt er doorgeschoven). Het totaal aantal karaktervergelijking is dus hoogstens gelijk aan de lengte T, plus het aantal verschuivingen. Elke verschuiving gebeurd over minstens 1 positie, zodat het aantal verschuivingen O(n) is. Dit levert dus idd $\theta(n)$.
+\npar
+Aangezien de voorbereiding van de prefix functie, de nieuwe prefixfunctie en de foutfunctie $\theta(m)$ is, wordt de totale performantie $\theta(m+n)$
