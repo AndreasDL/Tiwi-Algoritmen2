@@ -184,3 +184,38 @@ De verschuiving is bovendien onafhankelijk van de foutieve patroon positie i , e
 \npar
 Hierbij is ook de verschuiving onafhankelijk van de foutieve patroonpositie i. Het gevolg hiervan is dat de karakters van P die met T vergeleken moeten worden, geen rol meer speelt. We kunnen ze dus overlopen op de kans dat ze voorkomen.
 \end{enumerate}
+\clearpage
+\subsubsection{Juiste Suffix}
+\mijnfiguur[ht]{width=0.9\textwidth}{BMGoodSuffix1}{}
+We beginnen achteraan te vergelijken en als we een karakter tegenkomen dat niet meer klopt, dan hebben we echter wel een goede suffix gevonden van P.
+
+\mijnfiguur[ht]{width=0.9\textwidth}{BMGoodSuffix2}{}
+We kunnen P nu dus ook zo verschuiven dat deze suffix gevonden blijft.
+\clearpage
+\mijnfiguur[ht]{width=0.9\textwidth}{BMGoodSuffix3}{}
+Bij het verschuiven kan er ook een overlap zijn van de patronen.
+
+\mijnfiguur[ht]{width=0.9\textwidth}{BMGoodSuffix4}{}
+Als we bijvoorbeeld B enkel achteraan of vooraan hebben, kunnen we P volledig doorschuiven.
+\npar
+Om de verschuiving te bepalen gebruiken we een tabel v[]. Deze vullen we op met de suffixfunctie s(), deze is analoog aan de prefix functie, maar dan voor de suffix. Bijgevold is deze dus ook $\theta(m)$.
+\npar
+Er zijn echter nog een aantal speciale gevallen :
+\begin{enumerate}
+\item P werd gevonden: de foutieve positie is dan nul, het juiste suffix is nu P. Toch mogen we P niet zomaar volledige doorschuiven, het kan zijn dat er overlap is binnen het patroon. Deze verschuiving is m - s(1) wat we zullen opslaan onder v[o]. Deze verschuiving is steeds positief want s(1) kan niet groter zijn dan m. De verschuiving == m als er geen overlap is (dhu)
+\item Er is geen juiste suffix: De verschuiving van de eerste heuristiek is nu zeker positief; het verkeerde karakter t kan onmogelijk rechts van positie m in P liggen. De waarde voor deze heuristiek is dan echter wel 1.
+\item Het juiste suffix komt niet meer in P voor. Dan werd er geen index j gevonden waarvoor sj) = m-i. Het is duidelijk dat we P dan over meer dan i positief naar rechts mogen verschuiven. Dit is echter niet noodzakelijke m posities, want het is nog altijd mogelijk dat er een suffix van het juiste suffix overeenkomt met een prefix van P. We moeten de grootste van die suffixen nemen, vermits die de kleinste verschuiving geeft \& dus niets overslaat. We bekomen weer s(1), zodat de overeenkomstige verschuiving v[i](0$<$i$<$m)  = m-s(1). Deze is steeds positief en =m als er geen overlap is.
+\end{enumerate}
+\npar
+v[] maken is traag omdat we voor elke foutpositie i de indices j waarvoor s(j) = m - i lineair moesten zoeken in de suffix tabel van P. Van deze indices namen we vervolgens de grootste index om te verschuiven. We kunnen de suffix tabel echter ook op voorhand overlopen en de foutpositie en de verschuiving bepalen. Om ook de waarden te bekomen voor de foutposities waarop geen suffix te vinden is , initialiseren we de tabel met m-s(1). Opstellen van de tabel gaat dan als volgt:
+\begin{itemize}
+\item voor de foutposities 0 $<$ i $<$ m waarbij het juiste suffix wel nog voorkomt is m-s(1) een bovengrens voor de verschuiving. Want als s(1) kleiner is dan m-i (lengte van s), dan zou deze verschuiving het juiste suffix niet eens gebruiken. voor s(1) groter dan of gelijk aan m-i, is s ook een suffix van dit suffix, wat dus een mogelijk kandidaat voor s' oplevert. Deze initi\"ele waarde zal aangepast worden als het overlopen van de suffix tabel een kleinere verschuiving vindt.
+\item Voor posities 0 $<=$ i $<$ m waarbij de suffix niet meer voorkomt is m-s(1) de juiste waarde. 
+\item Voor i == m; als er geen juiste suffix bestaat moet v[m] de waarde een krijgen. Dat zal ook zo gebeuren doordat j = m overeenkomt met foutpositie m-s(m) = m wat op zijn beurt ervoor zorgt voor een verschuiving van m+1-m = 1. m-s(1) $>=$ 1 dus zullen we 1 behouden.
+\end{itemize}
+\npar
+Met deze tabel is de methode $\theta(m)$ Het voorbereidend werk voor de tweede heuristiek wordt dus ook $\theta(m)$ en vereist evenveel plaats.
+\npar
+De lineaire performantie in het slechtste geval kan enkel verzekerd worden als het gevonden juiste suffix s' nog aan een bijkomende voorwaarde voldoet. Het karakter dat links van s' ligt in P moet namelijk verschillend zijn van het karakter P[i] dat links van s ligt in P, anders zal er na verschuiving van P op die plaats zeker geen overeenkomst met T gevonden worden (i was immers de plaats van de fout \& als ze gelijk zijn hebben we dus dezelfde fout). De verschuivingen kunnen hierdoor nog groter worden. De aanpassingen die hiervoor moeten gebeuren zijn gering.
+\npar
+Indien P niet in T voorkomt hebben we een performantie van O(n+m). Als P wel voorkomt hebben we in het slechste geval O(nm). Dit kan ook verholpen worden; als P voorkomt in T is de verschuiving m-s(1) om de grootst mogelijke overlappende suffix s(1) van P te vinden. Hierna beginnen we weer achteraan in P. Wanneer deze vergelijking echter bij index s(1) van P isgekomen, kan ze stoppen, want het suffix werd reeds gevonden. Daarmee is het algoritme nu in alle gevallen lineair. (in het extreme geval is S(1) = m-1 zodat P maar over 1 positie verschoven wordt. Op de nieuwe positie van P moet enkel het laatste karakter P[m] met T vergeleken worden, want we weten dat de resterend m-1 karakters overeenkomen. Er gebeurt dus slechts een karaktertest per positie in T).
