@@ -15,6 +15,7 @@ Voorbereiding herexamen algoritmen II, Tiwi/Ugent
 **Zie ook**
 * [tiwi-algoritmen - github by ahlun](https://github.com/ahluntang/tiwi-algoritmen)
 * [tiwi-algotitmen - site by ahlun](http://algoritmen.ahlun.be/Algoritmen)
+* [Cédric verstraeten - blog](http://blog.cedric.ws/)
 * [blog post by wixon](http://jns.me/blog/2014/07/09/algorithms-and-data-structures/)
 * [blog post about search trees](http://andreasdl.wordpress.com/2014/08/05/search-trees/)
 
