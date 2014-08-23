@@ -19,59 +19,49 @@ public:
 	void add(const K& key, const D& data);
 	void del(const K& key);
 private:
-	Node<K,D>* _root;
+	Node<K,D>* _k;
 	int _size;
 	Node<K,D>* searchNode(const K& key);
 
-	void rotLeft(Node<K,D>* n);
-	void rotRight(Node<K,D>* n);
+	void rotLeft();
+	void rotRight();
+	void addNode(RBTree<K,D>* j, const K& key, const D& data, int sw);
+	bool isRed(){ return _k != 0 && !_k->_isBlack; }
 };
 
 template<class K, class D>
 class Node{
 friend class RBTree<K,D>;
 public:
-	Node(const K& key, const D& data, const bool isBlack);
+	Node(const K& key, const D& data, const bool isBlack): _key(key), _data(data),_isBlack(isBlack){}
 	~Node();
 	
-	const D& getData();
-	const K& getKey();
-
-	bool isBlack();
-	Node* getLeft();
-	Node* getRight();
-	
-	void setBlack(bool b);
-	void setLeft(Node* n);
-	void setRight(Node* n);
-	
+	const D& getData(){ return _data; }
+	const K& getKey(){ return _key; }
+		
 	template<class L,class E> 
-	friend std::ostream &operator<<(std::ostream &stream, const Node<L,E> &n);
-	template<class L,class E> 
-	friend std::ostream &operator<(const Node<L,E> &m, const Node<L,E> &n){ return m._key < n._key;	}
-	template<class L,class E> 
-	friend std::ostream &operator>(const Node<L,E> &m, const Node<L,E> &n){ return m._key > n._key; }
-	template<class L,class E>
-	friend std::ostream &operator<=(const Node<L,E> &m, const Node<L,E> &n){ return m._key <= n._key; }
-	template<class L,class E> 
-	friend std::ostream &operator>=(const Node<L,E> &m, const Node<L,E> &n){ return m._key >= n._key; }
-	template<class L,class E>
-	friend std::ostream &operator==(const Node<L,E> &m, const Node<L,E> &n){ return m._key == n._key; }
-	
+	friend std::ostream &operator<<(std::ostream &stream, const Node<L,E> &n){
+		return stream << (n._isBlack ? "Black " : "Red") 
+			<< "Node Key= " << n._key
+			<< " Data= " << n._data;
+	}
 private:
 	bool _isBlack;
 	K _key;
 	D _data;
-	Node<K,D>* _left;
-	Node<K,D>* _right;
+	RBTree<K,D>* _left;
+	RBTree<K,D>* _right;
 };
 
 
 //tree implementation///////////////////////////////////////////////////////////
+//Top Down it is!
 
+//construct
 template<class K, class D>
-RBTree<K,D>::RBTree(): _size(0),_root(0){}
+RBTree<K,D>::RBTree(): _size(0),_k(0){}
 
+//search
 template<class K, class D>
 const D& RBTree<K,D>::search(const K& key){
 	cout << "searching " << key;
@@ -90,86 +80,90 @@ const D& RBTree<K,D>::search(const K& key){
 }
 template<class K, class D>
 Node<K,D>* RBTree<K,D>::searchNode(const K& key){
-	Node<K,D>* n = _root;
-	Node<K,D>* o = _root;
+	Node<K,D>* n = _k;
+	Node<K,D>* o = _k;
 
 	while (n != 0 && key != n->_key){
 		o = n;
-		if ( key < n->_key){
-			n = n->_left;
+		if ( key < n->_key && n->_left != 0){
+			n = n->_left->_k;
+		}else if (n->_right != 0){
+			n = n->_right->_k;
 		}else{
-			n = n->_right;
+			n = 0;
 		}
 	}
 	//return n; this is either the node containing the key, or the should be parent
 	return ( n == 0 ? o : n);
 }
 
+//rotate
+template<class K,class D>
+void RBTree<K,D>::rotRight(){
+	Node<K,D>* down = _k;
+	Node<K,D>* up = _k->_left->_k;
+	down->_left->_k = up->_right->_k;
+	up->_right->_k = down;
+	_k = up;
+	down = 0;
+	up = 0;
+}
+template<class K,class D>
+void RBTree<K,D>::rotLeft(){
+	Node<K,D>* down = _k;
+	Node<K,D>* up = _k->_right->_k;
+	down->_right->_k = up->_left->_k;
+	up->_left->_k = down;
+	_k = up;
+	down = 0;
+	up = 0;
+}
+
+//top down add
 template<class K, class D>
 void RBTree<K,D>::add(const K& key, const D& data){
-	if ( _size == 0){
-		_root = new Node<K,D>(key,data, true);
-		_size++;
-	}else{
-		Node<K,D>* n = searchNode(key); //n can't be 0 here b/c that means the size = 0 and we checked that
-		if (n->_key != key){ //key not in tree
-			(key < n->_key ? n->_left : n->_right) = new Node<K,D>(key,data,false);			
-		}
+	addNode(this,key,data,0);
+	_k->_isBlack = true;
+}
+template<class K, class D>
+void RBTree<K,D>::addNode(RBTree<K,D>* h, const K& key, const D& data, int sw){
+	//tree empty
+	if (h->_k == 0){ 
+		h->_k = new Node<K,D>(key,data,true); 
+		return; 
 	}
+	
+	//2 red children => make me red & them black
+	if ( h->_k->_left->isRed() && h->_k->_right->isRed() ){
+		h->_k->_isBlack = false;
+		h->_k->_left->_k->_isBlack = true;
+		h->_k->_right->_k->_isBlack = true;
+	}
+
+	//fixes
+    if(key < h->_k->_key){ //left
+        addNode( h->_k->_left, key, data, 0);
+        if(h->isRed() && h->_k->_left->isRed() && sw) 
+        	h->rotRight();
+        if(h->_k->_left->isRed() && h->_k->_left->_k->_left->isRed()){
+            h->rotRight(); 
+            h->_k->_isBlack=true; 
+            h->_k->_right->_k->_isBlack = false;
+        }
+    }else{ //right
+        addNode( h->_k->_right, key, data, 1);
+        if( !h->isRed() && h->_k->_right->isRed() && !sw )
+        	h->rotLeft();
+        if( h->_k->_right->isRed() && h->_k->_right->_k->_right->isRed() ){
+            h->rotLeft(); 
+            h->_k->_isBlack = true;
+            h->_k->_left->_k->_isBlack = false;
+        }
+    }
+
 }
 
 
-
-//node implementation ////////////////////////////////////////////////////
-
-template <class K,class D>
-Node<K,D>::Node(const K& key,const D& data, bool isBlack): _key(key), _data(data),_isBlack(isBlack){}
-
-template <class K,class D>
-const D& Node<K,D>::getData(){
-	return _data;
-}
-
-template <class K,class D>
-const K& Node<K,D>::getKey(){
-	return _key;
-}
-
-template <class K,class D>
-bool Node<K,D>::isBlack(){
-	return _isBlack;
-}
-
-template <class K,class D>
-Node<K,D>* Node<K,D>::getLeft(){
-	return _left;
-}
-
-template <class K,class D>
-Node<K,D>* Node<K,D>::getRight(){
-	return _right;
-}
-
-template <class K,class D>
-void Node<K,D>::setBlack(bool isBlack){
-	_isBlack = isBlack;
-}
-
-template <class K,class D>
-void Node<K,D>::setRight(Node* n){
-	_right = n;
-}
-
-template <class K,class D>
-void Node<K,D>::setLeft(Node* n){
-	_left = n;
-}
-
-template <class L,class E>
-std::ostream &operator<<(std::ostream &stream, const Node<L,E> &n){
-	return stream << (n._isBlack ? "Black " : "Red") 
-		<< "Node Key= " << n._key
-		<< " Data= " << n._data;
-}
+//top down delete
 
 #endif
