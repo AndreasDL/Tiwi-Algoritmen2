@@ -27,6 +27,8 @@ Voorbereiding herexamen algoritmen II, Tiwi/Ugent
 * [Site over string matching algorithms](http://www.stoimen.com/blog/2012/04/17/computer-algorithms-boyer-moore-string-search-and-matching/)
 * [Awesome SO post(1e) over suffix trees](http://stackoverflow.com/questions/9452701/ukkonens-suffix-tree-algorithm-in-plain-english?lq=1)
 
+* [Suffix tree (paper)](https://www.youtube.com/watch?v=VA9m_l6LpwI)
+
 **Thanks to**
 * Iedereen die op een manier materiaal heeft voorzien
 * R. Stoop for writing the course 'Algoritmen II' (uitgave 2013-2014)
