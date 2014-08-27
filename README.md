@@ -7,6 +7,7 @@ Voorbereiding herexamen algoritmen II, Tiwi/Ugent
 * opgaves_org -> opgaves van de labos met bijhorende oplossingen
 * theorie -> uitgewerkte samenvatting (dit zal ik niet volledig afwerken, wss zelfs niet half)
 * archive -> Oude exemen vragen van op het [forum](http://inwe.be)
+* labos -> gedeeltelijke oplossingen van de labos
 
 **Notes**
 * I've shamelessly ripped all images from the internet, they are not mine. If they are yours and you want them removed, pm me.
